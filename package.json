@@ -1,0 +1,25 @@
+{
+  "name": "adonaifotocine2",
+  "version": "1.0.0",
+  "description": "Landing page da Adonai Fotocine — fotografia e filmagem de casamentos.",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./assets/css/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./assets/css/tailwind.css --watch",
+    "serve": "python3 -m http.server 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juliojuliano/adonaifotocine2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juliojuliano/adonaifotocine2/issues"
+  },
+  "homepage": "https://github.com/Juliojuliano/adonaifotocine2#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
