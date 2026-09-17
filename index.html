@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adonai Fotocine | Fotografia e Filmagem de Casamentos</title>
+<meta name="description" content="Adonai Fotocine — fotografia e filmagem cinematográfica de casamentos, pré-wedding, aniversários e formaturas. Eternizamos os momentos mais importantes da sua história.">
+<meta name="theme-color" content="#141414">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adonai Fotocine">
+<meta property="og:title" content="Adonai Fotocine | Fotografia e Filmagem de Casamentos">
+<meta property="og:description" content="Fotografia e filmagem cinematográfica de casamentos, pré-wedding, aniversários e formaturas.">
+<meta property="og:image" content="https://picsum.photos/seed/adonai-og/1200/630">
+<meta property="og:locale" content="pt_BR">
+
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS compilado (sem dependência de CDN em runtime) -->
+<link rel="stylesheet" href="assets/css/tailwind.css">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-brand-cream text-brand-ink font-sans antialiased">
+
+<a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+<!-- ===================== HEADER ===================== -->
+<header id="header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-5 md:px-8 flex items-center justify-between h-20" aria-label="Navegação principal">
+    <a href="#topo" class="flex items-center gap-2 font-serif text-xl md:text-2xl font-semibold text-white header-logo" aria-label="Adonai Fotocine — página inicial">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-brand-gold shrink-0" aria-hidden="true">
+        <path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+        <circle cx="12" cy="13" r="3.5"/>
+      </svg>
+      <span>Adonai <span class="text-brand-gold">Fotocine</span></span>
+    </a>
+
+    <ul class="hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide uppercase text-white/90">
+      <li><a href="#topo" class="nav-link" data-nav>Início</a></li>
+      <li><a href="#sobre" class="nav-link" data-nav>Sobre</a></li>
+      <li><a href="#servicos" class="nav-link" data-nav>Serviços</a></li>
+      <li><a href="#portfolio" class="nav-link" data-nav>Portfólio</a></li>
+      <li><a href="#depoimentos" class="nav-link" data-nav>Depoimentos</a></li>
+      <li><a href="#contato" class="nav-link" data-nav>Contato</a></li>
+    </ul>
+
+    <a href="https://wa.me/5511900000000?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!"
+       target="_blank" rel="noopener noreferrer"
+       class="hidden lg:inline-flex items-center gap-2 bg-brand-gold hover:bg-brand-golddark text-brand-dark font-semibold text-sm px-5 py-2.5 rounded-full transition-colors">
+      Fale Conosco
+    </a>
+
+    <button id="menu-toggle" type="button" class="lg:hidden text-white p-2" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu de navegação">
+      <svg id="icon-menu" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="icon-close" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="hidden" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="lg:hidden hidden bg-brand-dark border-t border-white/10">
+    <ul class="flex flex-col px-6 py-4 gap-1 text-white/90 font-medium">
+      <li><a href="#topo" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Início</a></li>
+      <li><a href="#sobre" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Sobre</a></li>
+      <li><a href="#servicos" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Serviços</a></li>
+      <li><a href="#portfolio" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Portfólio</a></li>
+      <li><a href="#depoimentos" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Depoimentos</a></li>
+      <li><a href="#contato" class="block py-3 mobile-nav-link" data-nav>Contato</a></li>
+      <li class="pt-2">
+        <a href="https://wa.me/5511900000000" target="_blank" rel="noopener noreferrer" class="flex justify-center items-center gap-2 bg-brand-gold text-brand-dark font-semibold px-5 py-3 rounded-full">
+          Fale Conosco
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<main id="conteudo-principal">
+
+  <!-- ===================== HERO ===================== -->
+  <section id="topo" class="hero relative min-h-screen flex items-center justify-center text-center px-5">
+    <div class="hero-bg" style="background-image:url('https://picsum.photos/seed/adonai-hero/1920/1280')" role="img" aria-label="Casal em cerimônia de casamento ao entardecer"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-brand-dark"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto text-white reveal">
+      <p class="uppercase tracking-[0.3em] text-brand-gold text-xs md:text-sm font-semibold mb-5">Fotografia &amp; Filmagem Cinematográfica</p>
+      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight mb-6">
+        Eternizamos os momentos mais importantes da sua história
+      </h1>
+      <p class="text-base md:text-lg text-white/85 max-w-xl mx-auto mb-10">
+        Casamentos, ensaios e eventos registrados com sensibilidade, técnica e muito carinho — para que você reviva cada emoção sempre que quiser.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#portfolio" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-gold hover:bg-brand-golddark text-brand-dark font-semibold px-8 py-3.5 rounded-full transition-colors">
+          Ver Portfólio
+        </a>
+        <a href="https://wa.me/5511900000000?text=Ol%C3%A1%2C%20quero%20agendar%20uma%20sess%C3%A3o!" target="_blank" rel="noopener noreferrer"
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/60 hover:border-brand-gold hover:text-brand-gold text-white font-semibold px-8 py-3.5 rounded-full transition-colors">
+          Agendar Sessão
+        </a>
+      </div>
+    </div>
+
+    <a href="#sobre" aria-label="Rolar para a seção Sobre" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 hover:text-brand-gold scroll-cue">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="4" x2="12" y2="20"/><polyline points="6 14 12 20 18 14"/></svg>
+    </a>
+  </section>
+
+  <!-- ===================== SOBRE ===================== -->
+  <section id="sobre" class="py-20 md:py-28 px-5 bg-white scroll-mt-20">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 items-center">
+      <div class="reveal">
+        <div class="relative">
+          <img src="https://picsum.photos/seed/adonai-about/900/1100" alt="Fotógrafo da Adonai Fotocine registrando um casamento" class="rounded-2xl shadow-xl w-full object-cover aspect-[4/5]" loading="lazy" width="900" height="1100">
+          <div class="hidden sm:flex absolute -bottom-8 -right-6 bg-brand-dark text-white rounded-2xl px-7 py-5 shadow-xl items-center gap-4">
+            <span class="font-serif text-4xl text-brand-gold font-semibold">12+</span>
+            <span class="text-sm leading-tight max-w-[8rem]">anos contando histórias de amor</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <p class="uppercase tracking-[0.25em] text-brand-goldtext text-xs md:text-sm font-semibold mb-4">Sobre a Adonai Fotocine</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-6">Mais do que fotos, memórias que atravessam gerações</h2>
+        <p class="text-brand-ink/80 mb-4 leading-relaxed">
+          Somos uma equipe apaixonada por contar histórias reais através da fotografia e do cinema. Unimos sensibilidade artística e domínio técnico para registrar cada olhar, sorriso e lágrima de emoção do seu grande dia.
+        </p>
+        <p class="text-brand-ink/80 mb-8 leading-relaxed">
+          Do primeiro contato à entrega do álbum, cuidamos de cada detalhe com atenção e transparência, para que você viva o momento — e deixe o resto com a gente.
+        </p>
+
+        <dl class="grid grid-cols-2 sm:grid-cols-4 gap-6" id="stats">
+          <div class="stat-item">
+            <dt class="sr-only">Anos de experiência</dt>
+            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="12">0</span>+</dd>
+            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Anos de experiência</p>
+          </div>
+          <div class="stat-item">
+            <dt class="sr-only">Casamentos realizados</dt>
+            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="480">0</span>+</dd>
+            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Casamentos realizados</p>
+          </div>
+          <div class="stat-item">
+            <dt class="sr-only">Clientes satisfeitos</dt>
+            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="1200">0</span>+</dd>
+            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Clientes satisfeitos</p>
+          </div>
+          <div class="stat-item">
+            <dt class="sr-only">Prêmios e reconhecimentos</dt>
+            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="15">0</span>+</dd>
+            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Prêmios recebidos</p>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVIÇOS ===================== -->
+  <section id="servicos" class="py-20 md:py-28 px-5 bg-brand-cream scroll-mt-20">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <p class="uppercase tracking-[0.25em] text-brand-goldtext text-xs md:text-sm font-semibold mb-4">O que fazemos</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-4">Nossos Serviços</h2>
+        <p class="text-brand-ink/70">Cobertura completa para os momentos que merecem ser eternizados com excelência.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Card -->
+        <article class="service-card reveal">
+          <span class="service-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          <h3 class="font-serif text-xl font-semibold mb-2">Casamentos</h3>
+          <p class="text-brand-ink/70 text-sm leading-relaxed mb-4">Cobertura completa do "making of" à festa, com fotografia e filmagem cinematográfica sincronizadas.</p>
+          <a href="#contato" class="service-link" data-nav>Saiba mais →</a>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </span>
+          <h3 class="font-serif text-xl font-semibold mb-2">Pré-Wedding &amp; Noivado</h3>
+          <p class="text-brand-ink/70 text-sm leading-relaxed mb-4">Ensaios ao ar livre ou em estúdio para celebrar a fase mais romântica antes do grande dia.</p>
+          <a href="#contato" class="service-link" data-nav>Saiba mais →</a>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
+          </span>
+          <h3 class="font-serif text-xl font-semibold mb-2">Filmagem Cinematográfica</h3>
+          <p class="text-brand-ink/70 text-sm leading-relaxed mb-4">Vídeos com narrativa emocional, drone e trilha sonora exclusiva para reviver cada instante.</p>
+          <a href="#contato" class="service-link" data-nav>Saiba mais →</a>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <h3 class="font-serif text-xl font-semibold mb-2">Aniversários &amp; Debutantes</h3>
+          <p class="text-brand-ink/70 text-sm leading-relaxed mb-4">Registro de festas de 15 anos, bodas e aniversários com toda a emoção do momento.</p>
+          <a href="#contato" class="service-link" data-nav>Saiba mais →</a>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
+          </span>
+          <h3 class="font-serif text-xl font-semibold mb-2">Formaturas</h3>
+          <p class="text-brand-ink/70 text-sm leading-relaxed mb-4">Cobertura de colação de grau, festas e ensaios comemorativos para turmas e famílias.</p>
+          <a href="#contato" class="service-link" data-nav>Saiba mais →</a>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 16l4.5-4.5a2 2 0 0 1 2.8 0L16 16"/></svg>
+          </span>
+          <h3 class="font-serif text-xl font-semibold mb-2">Álbuns &amp; Produtos</h3>
+          <p class="text-brand-ink/70 text-sm leading-relaxed mb-4">Álbuns finos impressos, quadros e produtos exclusivos para guardar suas fotos com qualidade.</p>
+          <a href="#contato" class="service-link" data-nav>Saiba mais →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PORTFÓLIO ===================== -->
+  <section id="portfolio" class="py-20 md:py-28 px-5 bg-white scroll-mt-20">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+        <p class="uppercase tracking-[0.25em] text-brand-goldtext text-xs md:text-sm font-semibold mb-4">Nosso trabalho</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-4">Portfólio</h2>
+        <p class="text-brand-ink/70">Uma pequena amostra das histórias que já tivemos o privilégio de registrar.</p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-3 mb-10 reveal" id="portfolio-filters" role="group" aria-label="Filtrar portfólio por categoria">
+        <button type="button" class="filter-btn is-active" data-filter="todos">Todos</button>
+        <button type="button" class="filter-btn" data-filter="casamento">Casamentos</button>
+        <button type="button" class="filter-btn" data-filter="pre-wedding">Pré-Wedding</button>
+        <button type="button" class="filter-btn" data-filter="making-of">Making Of</button>
+        <button type="button" class="filter-btn" data-filter="video">Vídeo</button>
+      </div>
+
+      <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <!-- Gallery items injected via data below; static for no-JS fallback -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Visualização de imagem do portfólio">
+    <button type="button" id="lightbox-close" class="lightbox-btn lightbox-close" aria-label="Fechar visualização">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button type="button" id="lightbox-prev" class="lightbox-btn lightbox-prev" aria-label="Imagem anterior">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="lightbox-img">
+    <button type="button" id="lightbox-next" class="lightbox-btn lightbox-next" aria-label="Próxima imagem">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <p id="lightbox-caption" class="lightbox-caption"></p>
+  </div>
+
+  <!-- ===================== DEPOIMENTOS ===================== -->
+  <section id="depoimentos" class="py-20 md:py-28 px-5 bg-brand-dark text-white scroll-mt-20">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="uppercase tracking-[0.25em] text-brand-gold text-xs md:text-sm font-semibold mb-4 reveal">Quem já viveu essa experiência</p>
+      <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-14 reveal">Depoimentos</h2>
+
+      <div class="relative reveal">
+        <div class="overflow-hidden" id="testimonial-viewport">
+          <div class="flex transition-transform duration-500 ease-out" id="testimonial-track">
+
+            <div class="w-full shrink-0 px-4">
+              <div class="testimonial-card">
+                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
+                <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"A equipe da Adonai capturou cada detalhe do nosso casamento com uma sensibilidade incrível. Choramos de emoção assistindo ao filme!"</p>
+                <p class="font-semibold">Camila &amp; Rafael</p>
+                <p class="text-white/60 text-sm">Casamento — Dezembro 2025</p>
+              </div>
+            </div>
+
+            <div class="w-full shrink-0 px-4">
+              <div class="testimonial-card">
+                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
+                <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"Profissionalismo do início ao fim. As fotos do nosso pré-wedding ficaram maravilhosas e a entrega foi super rápida."</p>
+                <p class="font-semibold">Larissa &amp; Bruno</p>
+                <p class="text-white/60 text-sm">Pré-Wedding — Outubro 2025</p>
+              </div>
+            </div>
+
+            <div class="w-full shrink-0 px-4">
+              <div class="testimonial-card">
+                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
+                <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"Contratamos para os 15 anos da nossa filha e foi a melhor decisão. Equipe discreta, atenciosa e resultado impecável."</p>
+                <p class="font-semibold">Família Andrade</p>
+                <p class="text-white/60 text-sm">Debutante — Setembro 2025</p>
+              </div>
+            </div>
+
+            <div class="w-full shrink-0 px-4">
+              <div class="testimonial-card">
+                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
+                <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"Indico de olhos fechados! Um cuidado enorme com cada momento e um álbum lindíssimo como recordação."</p>
+                <p class="font-semibold">Juliana Prado</p>
+                <p class="text-white/60 text-sm">Casamento — Agosto 2025</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <button type="button" id="testimonial-prev" aria-label="Depoimento anterior" class="carousel-arrow carousel-arrow-left">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button type="button" id="testimonial-next" aria-label="Próximo depoimento" class="carousel-arrow carousel-arrow-right">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <div class="flex justify-center gap-2 mt-8" id="testimonial-dots" role="tablist" aria-label="Selecionar depoimento"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTATO ===================== -->
+  <section id="contato" class="py-20 md:py-28 px-5 bg-brand-cream scroll-mt-20">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <p class="uppercase tracking-[0.25em] text-brand-goldtext text-xs md:text-sm font-semibold mb-4">Vamos conversar</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-4">Entre em Contato</h2>
+        <p class="text-brand-ink/70">Conte um pouco sobre o seu evento e retornaremos com uma proposta personalizada.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-10">
+        <!-- Info -->
+        <div class="lg:col-span-2 reveal">
+          <div class="bg-white rounded-2xl shadow-sm p-8 h-full flex flex-col gap-6">
+            <div class="flex items-start gap-4">
+              <span class="contact-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10.5c0 6.5-9 12-9 12s-9-5.5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10.5" r="3"/></svg>
+              </span>
+              <div>
+                <h3 class="font-semibold mb-1">Atendimento</h3>
+                <p class="text-brand-ink/70 text-sm">São Paulo — SP e região<br>Atendimento em todo o Brasil mediante agenda</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <span class="contact-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </span>
+              <div>
+                <h3 class="font-semibold mb-1">Telefone / WhatsApp</h3>
+                <a href="https://wa.me/5511900000000" target="_blank" rel="noopener noreferrer" class="text-brand-ink/70 text-sm hover:text-brand-goldtext">+55 (11) 90000-0000</a>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <span class="contact-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" fill="none"/><path d="M4 4l8 8 8-8"/></svg>
+              </span>
+              <div>
+                <h3 class="font-semibold mb-1">E-mail</h3>
+                <a href="mailto:contato@adonaifotocine.com.br" class="text-brand-ink/70 text-sm hover:text-brand-goldtext">contato@adonaifotocine.com.br</a>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <span class="contact-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>
+              </span>
+              <div>
+                <h3 class="font-semibold mb-1">Horário</h3>
+                <p class="text-brand-ink/70 text-sm">Segunda a sábado, 9h às 19h</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2 mt-auto">
+              <a href="https://instagram.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Adonai Fotocine" class="social-icon">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              </a>
+              <a href="https://facebook.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Facebook da Adonai Fotocine" class="social-icon">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v7h3v-7h2.2l.3-3H14v-1.5a.5.5 0 0 1 .5-.5H15V8z"/></svg>
+              </a>
+              <a href="https://wa.me/5511900000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da Adonai Fotocine" class="social-icon">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20l1.1-5.4A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="lg:col-span-3 reveal">
+          <form id="contact-form" class="bg-white rounded-2xl shadow-sm p-8" novalidate>
+            <!-- honeypot anti-spam -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="empresa">Empresa</label>
+              <input type="text" id="empresa" name="empresa" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5 mb-5">
+              <div class="field">
+                <label for="nome" class="field-label">Nome completo <span class="text-red-600">*</span></label>
+                <input type="text" id="nome" name="nome" class="field-input" required autocomplete="name" aria-describedby="err-nome">
+                <p id="err-nome" class="field-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="email" class="field-label">E-mail <span class="text-red-600">*</span></label>
+                <input type="email" id="email" name="email" class="field-input" required autocomplete="email" aria-describedby="err-email">
+                <p id="err-email" class="field-error" role="alert"></p>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5 mb-5">
+              <div class="field">
+                <label for="telefone" class="field-label">Telefone / WhatsApp <span class="text-red-600">*</span></label>
+                <input type="tel" id="telefone" name="telefone" class="field-input" required autocomplete="tel" placeholder="(11) 90000-0000" aria-describedby="err-telefone">
+                <p id="err-telefone" class="field-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="evento" class="field-label">Tipo de evento <span class="text-red-600">*</span></label>
+                <select id="evento" name="evento" class="field-input" required aria-describedby="err-evento">
+                  <option value="">Selecione...</option>
+                  <option value="Casamento">Casamento</option>
+                  <option value="Pré-Wedding">Pré-Wedding / Noivado</option>
+                  <option value="Aniversário">Aniversário / Debutante</option>
+                  <option value="Formatura">Formatura</option>
+                  <option value="Outro">Outro</option>
+                </select>
+                <p id="err-evento" class="field-error" role="alert"></p>
+              </div>
+            </div>
+
+            <div class="mb-5">
+              <label for="data-evento" class="field-label">Data prevista do evento</label>
+              <input type="date" id="data-evento" name="data_evento" class="field-input">
+            </div>
+
+            <div class="mb-6">
+              <label for="mensagem" class="field-label">Mensagem <span class="text-red-600">*</span></label>
+              <textarea id="mensagem" name="mensagem" rows="4" class="field-input resize-none" required aria-describedby="err-mensagem" placeholder="Conte um pouco sobre o seu evento..."></textarea>
+              <p id="err-mensagem" class="field-error" role="alert"></p>
+            </div>
+
+            <button type="submit" id="submit-btn" class="submit-btn">
+              <span id="submit-text">Enviar mensagem</span>
+              <svg id="submit-spinner" class="hidden animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                <path d="M21 12a9 9 0 1 1-9-9" />
+              </svg>
+            </button>
+
+            <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="bg-brand-dark text-white/70 pt-16 pb-8 px-5">
+  <div class="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+    <div>
+      <a href="#topo" class="flex items-center gap-2 font-serif text-xl font-semibold text-white mb-4" data-nav>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-brand-gold" aria-hidden="true">
+          <path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/>
+        </svg>
+        Adonai Fotocine
+      </a>
+      <p class="text-sm leading-relaxed">Fotografia e filmagem cinematográfica para eternizar os momentos mais importantes da sua vida.</p>
+    </div>
+
+    <div>
+      <h3 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Navegação</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#sobre" class="hover:text-brand-gold" data-nav>Sobre</a></li>
+        <li><a href="#servicos" class="hover:text-brand-gold" data-nav>Serviços</a></li>
+        <li><a href="#portfolio" class="hover:text-brand-gold" data-nav>Portfólio</a></li>
+        <li><a href="#depoimentos" class="hover:text-brand-gold" data-nav>Depoimentos</a></li>
+        <li><a href="#contato" class="hover:text-brand-gold" data-nav>Contato</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Serviços</h3>
+      <ul class="space-y-2 text-sm">
+        <li>Casamentos</li>
+        <li>Pré-Wedding &amp; Noivado</li>
+        <li>Aniversários &amp; Debutantes</li>
+        <li>Formaturas</li>
+        <li>Filmagem Cinematográfica</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contato</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="tel:+5511900000000" class="hover:text-brand-gold">+55 (11) 90000-0000</a></li>
+        <li><a href="mailto:contato@adonaifotocine.com.br" class="hover:text-brand-gold">contato@adonaifotocine.com.br</a></li>
+        <li>São Paulo — SP</li>
+      </ul>
+      <div class="flex gap-3 mt-4">
+        <a href="https://instagram.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+        </a>
+        <a href="https://facebook.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v7h3v-7h2.2l.3-3H14v-1.5a.5.5 0 0 1 .5-.5H15V8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
+    <p>&copy; <span id="year"></span> Adonai Fotocine. Todos os direitos reservados.</p>
+    <p>CNPJ 00.000.000/0001-00</p>
+  </div>
+</footer>
+
+<!-- Floating actions -->
+<a href="https://wa.me/5511900000000?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!" target="_blank" rel="noopener noreferrer" class="float-btn float-whatsapp" aria-label="Falar no WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20l1.1-5.4A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5"/></svg>
+</a>
+<button type="button" id="back-to-top" class="float-btn float-top" aria-label="Voltar ao topo" hidden>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
