@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="t4 d4">
+  <title id="t4">Macro 3/4 angular do mostrador do Orient</title>
+  <desc id="d4">Placeholder — substitua pela imagem gerada com o prompt em prompts/site/07-feature-mostrador.md</desc>
+  <defs>
+    <radialGradient id="glow4" cx="24%" cy="18%" r="70%">
+      <stop offset="0%" stop-color="#C9A86A" stop-opacity="0.3"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="#000000"/>
+  <rect width="1600" height="1000" fill="url(#glow4)"/>
+  <circle cx="800" cy="500" r="330" fill="#fbfaf6" opacity="0.08"/>
+  <circle cx="800" cy="500" r="330" fill="none" stroke="#e8e2d0" stroke-opacity="0.35" stroke-width="2"/>
+  <g fill="#e8e2d0" opacity="0.55" font-family="Georgia, serif" font-size="30" text-anchor="middle">
+    <text x="800" y="220">12</text>
+    <text x="1000" y="270">1</text>
+    <text x="1130" y="400">2</text>
+    <text x="1160" y="510">3</text>
+  </g>
+  <rect x="795" y="330" width="10" height="160" fill="#e8e2d0" opacity="0.7"/>
+  <rect x="795" y="330" width="10" height="160" fill="#B3372C" opacity="0.5" transform="rotate(35 800 500)"/>
+  <circle cx="1120" cy="500" r="6" fill="#B3372C"/>
+  <text x="800" y="920" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#C9A86A" letter-spacing="2">MOSTRADOR — LEITURA INSTANTÂNEA</text>
+  <text x="800" y="955" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#888" letter-spacing="1">prompts/site/07-feature-mostrador.md</text>
+</svg>

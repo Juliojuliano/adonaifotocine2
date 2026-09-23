@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Macro extremo da coroa do Orient</title>
+  <desc id="d3">Placeholder — substitua pela imagem gerada com o prompt em prompts/site/06-feature-resistencia.md</desc>
+  <defs>
+    <radialGradient id="glow3" cx="22%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="#C9A86A" stop-opacity="0.32"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="#000000"/>
+  <rect width="800" height="1000" fill="url(#glow3)"/>
+  <circle cx="400" cy="500" r="170" fill="#0e0e0e" stroke="#C9A86A" stroke-opacity="0.4" stroke-width="2"/>
+  <g stroke="#6b5c3e" stroke-width="3" opacity="0.7">
+    <line x1="270" y1="440" x2="230" y2="440"/>
+    <line x1="270" y1="470" x2="220" y2="470"/>
+    <line x1="270" y1="500" x2="215" y2="500"/>
+    <line x1="270" y1="530" x2="220" y2="530"/>
+    <line x1="270" y1="560" x2="230" y2="560"/>
+  </g>
+  <circle cx="400" cy="500" r="60" fill="none" stroke="#C9A86A" stroke-opacity="0.6" stroke-width="1"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#C9A86A" letter-spacing="2">COROA — 5 ATM</text>
+  <text x="400" y="910" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#888" letter-spacing="1">prompts/site/06-feature-resistencia.md</text>
+</svg>
