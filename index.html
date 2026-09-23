@@ -249,11 +249,28 @@
         <button type="button" class="filter-btn" data-filter="video">Vídeo</button>
       </div>
 
-      <p id="gallery-status" class="text-center text-sm text-brand-ink/50 mb-6" role="status" aria-live="polite"></p>
-
       <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <!-- Gallery items injected via data below; static for no-JS fallback -->
       </div>
+    </div>
+  </section>
+
+  <!-- ===================== ÚLTIMOS EVENTOS (postados pelo cliente) ===================== -->
+  <section id="eventos" class="py-20 md:py-28 px-5 bg-brand-cream scroll-mt-20">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+        <p class="uppercase tracking-[0.25em] text-brand-goldtext text-xs md:text-sm font-semibold mb-4">Direto do estúdio</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-4">Últimos eventos</h2>
+        <p class="text-brand-ink/70">Álbuns completos dos eventos mais recentes, publicados pela própria Adonai FotoCine.</p>
+      </div>
+
+      <div id="events-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal">
+        <!-- Cards de evento injetados via JS (Google Sheets) -->
+      </div>
+
+      <p id="events-empty" class="hidden text-center text-brand-ink/50 text-sm">
+        Nenhum evento publicado ainda. Assim que a Adonai FotoCine cadastrar o primeiro, ele aparece aqui automaticamente.
+      </p>
     </div>
   </section>
 

@@ -9,7 +9,9 @@
   const CONFIG = window.SITE_CONFIG;
 
   const isFormConfigured = !CONFIG.FORM_ENDPOINT.includes("SEU_FORM_ID");
-  const isCloudinaryConfigured = !CONFIG.CLOUDINARY_CLOUD_NAME.includes("SEU_CLOUD_NAME");
+  const isEventsConfigured =
+    !CONFIG.EVENTS_SHEET_CSV_URL.includes("COLE_AQUI") &&
+    !CONFIG.EVENTS_FORM_URL.includes("COLE_AQUI");
 
   /* ===================== Ano no rodapé ===================== */
   const yearEl = document.getElementById("year");
@@ -120,10 +122,10 @@
 
   /* ===================== Portfólio: dados + render ===================== */
 
-  // Fallback estático (placeholders) — usado enquanto o Cloudinary não
-  // estiver configurado, ou se a busca das fotos reais falhar por
-  // qualquer motivo. O site nunca fica com a galeria vazia.
-  const fallbackGalleryData = [
+  // Amostra fixa de trabalhos, mantida pelo estúdio (não muda sozinha).
+  // Os eventos que o cliente cadastra aparecem à parte, na seção
+  // "Últimos eventos" — ver loadEvents() mais abaixo.
+  const galleryData = [
     { id: 1, category: "casamento", seed: "adonai-wed-1", alt: "Noivos trocando alianças durante a cerimônia" },
     { id: 2, category: "casamento", seed: "adonai-wed-2", alt: "Noiva sorrindo ao ser preparada para a cerimônia" },
     { id: 3, category: "pre-wedding", seed: "adonai-pw-1", alt: "Casal em ensaio pré-wedding ao entardecer" },
@@ -145,45 +147,14 @@
     video: "Vídeo"
   };
 
-  // Toda foto enviada pelo cliente no painel (/admin/) recebe, além da
-  // tag da categoria, esta tag em comum — é o que garante que só fotos
-  // do Adonai FotoCine apareçam aqui, mesmo que o cloud name do
-  // Cloudinary seja reaproveitado para outra coisa no futuro.
-  const CLOUDINARY_GALLERY_TAG = "adonai-gallery";
-
-  function cloudinaryThumbUrl(publicId, format) {
-    return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_fill,w_700,h_700/${publicId}.${format}`;
-  }
-  function cloudinaryFullUrl(publicId, format) {
-    return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,w_1600/${publicId}.${format}`;
-  }
-
-  function fallbackThumbUrl(item) {
-    return `https://picsum.photos/seed/${item.seed}/700/700`;
-  }
-  function fallbackFullUrl(item) {
-    return `https://picsum.photos/seed/${item.seed}/1400/1400`;
-  }
-
-  let galleryData = fallbackGalleryData.map((item) => ({
-    ...item,
-    thumbUrl: fallbackThumbUrl(item),
-    fullUrl: fallbackFullUrl(item)
-  }));
-
   const gallery = document.getElementById("gallery");
-  const galleryStatus = document.getElementById("gallery-status");
-  const activeFilter = () =>
-    document.querySelector(".filter-btn.is-active")?.dataset.filter || "todos";
 
   function renderGallery() {
-    const currentFilter = activeFilter();
-
     gallery.innerHTML = galleryData
       .map(
         (item, index) => `
-      <button type="button" class="gallery-item${currentFilter !== "todos" && item.category !== currentFilter ? " is-hidden" : ""}" data-category="${item.category}" data-index="${index}" aria-label="Ampliar foto: ${item.alt}">
-        <img src="${item.thumbUrl}" alt="${item.alt}" loading="lazy" width="700" height="700">
+      <button type="button" class="gallery-item" data-category="${item.category}" data-index="${index}" aria-label="Ampliar foto: ${item.alt}">
+        <img src="https://picsum.photos/seed/${item.seed}/700/700" alt="${item.alt}" loading="lazy" width="700" height="700">
         <span class="gallery-overlay"><span>${categoryLabels[item.category]}</span></span>
       </button>`
       )
@@ -195,63 +166,122 @@
   }
   renderGallery();
 
-  // Busca as fotos reais enviadas pelo cliente (via /admin/) direto do
-  // Cloudinary, sem precisar de backend: cada categoria tem sua própria
-  // tag, e o Cloudinary expõe uma listagem pública por tag (precisa
-  // estar habilitada nas configurações da conta — ver README).
-  async function loadCloudinaryGallery() {
-    if (!isCloudinaryConfigured) return;
+  /* ===================== Últimos eventos (cadastrados pelo cliente) ===================== */
+  // O cliente preenche um Google Formulário depois de cada evento (nome,
+  // data, categoria e link do álbum do Google Fotos). As respostas caem
+  // numa planilha do Google Sheets publicada como CSV — sem backend, sem
+  // chave secreta exposta. Ver README.md, seção "Eventos do cliente".
+  const eventsSection = document.getElementById("eventos");
+  const eventsList = document.getElementById("events-list");
+  const eventsEmpty = document.getElementById("events-empty");
 
-    const categories = Object.keys(categoryLabels);
-    try {
-      const responses = await Promise.all(
-        categories.map((category) =>
-          fetch(
-            `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/list/${encodeURIComponent(
-              category
-            )}.json`
-          )
-            .then((res) => (res.ok ? res.json() : { resources: [] }))
-            .then((data) => ({ category, resources: data.resources || [] }))
-            .catch(() => ({ category, resources: [] }))
-        )
-      );
+  // Parser de CSV simples, mas correto para campos entre aspas com
+  // vírgulas dentro (comum em nomes de evento tipo "Casamento, Ana e Pedro").
+  function parseCsv(text) {
+    const rows = [];
+    let row = [];
+    let field = "";
+    let inQuotes = false;
 
-      const items = [];
-      responses.forEach(({ category, resources }) => {
-        resources.forEach((res) => {
-          items.push({
-            id: res.public_id,
-            category,
-            format: res.format,
-            version: res.version,
-            alt: `Foto de ${categoryLabels[category].toLowerCase()} — Adonai FotoCine`,
-            thumbUrl: cloudinaryThumbUrl(res.public_id, res.format),
-            fullUrl: cloudinaryFullUrl(res.public_id, res.format)
-          });
-        });
-      });
-
-      // Mais recentes primeiro.
-      items.sort((a, b) => b.version - a.version);
-
-      if (items.length > 0) {
-        galleryData = items;
-        renderGallery();
-        if (galleryStatus) galleryStatus.textContent = "";
-      } else if (galleryStatus) {
-        galleryStatus.textContent =
-          "Nenhuma foto publicada pelo cliente ainda — mostrando fotos de exemplo.";
-      }
-    } catch (err) {
-      // Mantém o fallback estático em qualquer erro de rede/config.
-      if (galleryStatus) {
-        galleryStatus.textContent =
-          "Não foi possível carregar as fotos mais recentes agora — mostrando fotos de exemplo.";
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      if (inQuotes) {
+        if (char === '"' && text[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else if (char === '"') {
+          inQuotes = false;
+        } else {
+          field += char;
+        }
+      } else if (char === '"') {
+        inQuotes = true;
+      } else if (char === ",") {
+        row.push(field);
+        field = "";
+      } else if (char === "\n" || char === "\r") {
+        if (char === "\r" && text[i + 1] === "\n") i++;
+        row.push(field);
+        rows.push(row);
+        row = [];
+        field = "";
+      } else {
+        field += char;
       }
     }
+    if (field.length > 0 || row.length > 0) {
+      row.push(field);
+      rows.push(row);
+    }
+    return rows.filter((r) => r.some((cell) => cell.trim() !== ""));
   }
-  loadCloudinaryGallery();
+
+  function normalizeCategory(raw) {
+    const value = (raw || "").toLowerCase().trim();
+    if (value.includes("pré") || value.includes("pre-wedding") || value.includes("pre wedding")) return "pre-wedding";
+    if (value.includes("making")) return "making-of";
+    if (value.includes("vídeo") || value.includes("video")) return "video";
+    return "casamento";
+  }
+
+  function renderEvents(events) {
+    if (!eventsSection) return;
+
+    if (events.length === 0) {
+      eventsList.innerHTML = "";
+      if (eventsEmpty) eventsEmpty.classList.remove("hidden");
+      return;
+    }
+
+    if (eventsEmpty) eventsEmpty.classList.add("hidden");
+    eventsList.innerHTML = events
+      .map(
+        (ev) => `
+      <article class="event-card">
+        <span class="event-card__badge">${categoryLabels[ev.category]}</span>
+        <h3 class="event-card__title">${ev.name}</h3>
+        <p class="event-card__date">${ev.date}</p>
+        <a href="${ev.albumUrl}" target="_blank" rel="noopener" class="event-card__link">Ver álbum completo →</a>
+      </article>`
+      )
+      .join("");
+  }
+
+  async function loadEvents() {
+    if (!eventsSection) return;
+    if (!isEventsConfigured) {
+      eventsSection.classList.add("hidden");
+      return;
+    }
+
+    try {
+      const res = await fetch(CONFIG.EVENTS_SHEET_CSV_URL);
+      if (!res.ok) throw new Error("CSV indisponível");
+      const text = await res.text();
+      const rows = parseCsv(text);
+
+      // Primeira linha é o cabeçalho do formulário do Google — ignora.
+      const dataRows = rows.slice(1);
+
+      // Colunas na ordem em que o Google Forms grava:
+      // [Carimbo de data/hora, Nome do evento, Data do evento, Categoria, Link do álbum]
+      const events = dataRows
+        .map((r) => ({
+          name: (r[1] || "").trim(),
+          date: (r[2] || "").trim(),
+          category: normalizeCategory(r[3]),
+          albumUrl: (r[4] || "").trim()
+        }))
+        .filter((ev) => ev.name && ev.albumUrl)
+        .reverse(); // mais recentes primeiro (formulário grava em ordem crescente)
+
+      renderEvents(events);
+    } catch (err) {
+      // Mantém a seção, mas mostra o estado "vazio" em vez de travar.
+      renderEvents([]);
+    }
+  }
+  loadEvents();
 
   /* ===================== Filtros do portfólio ===================== */
   const filterButtons = document.querySelectorAll(".filter-btn");
@@ -280,7 +310,7 @@
 
   function updateLightboxImage() {
     const item = galleryData[currentIndex];
-    lightboxImg.src = item.fullUrl;
+    lightboxImg.src = `https://picsum.photos/seed/${item.seed}/1400/1400`;
     lightboxImg.alt = item.alt;
     lightboxCaption.textContent = `${categoryLabels[item.category]} — ${item.alt}`;
   }
