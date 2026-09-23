@@ -75,21 +75,33 @@ Por isso, o site já está 100% funcional e navegável com placeholders:
 
 ### Para gerar os assets finais
 
-1. Siga `prompts/site/00-README.md` — ele explica o workflow completo
-   (First Frame → Last Frame → Veo → re-encode com `ffmpeg -g 1
-   -keyint_min 1` para permitir scroll-scrubbing suave).
-2. Cada seção tem seu prompt de imagem em `prompts/site/0X-*.md`.
-3. Os dois vídeos (hero e caixa abrindo) têm prompt completo em
-   `prompts/videos/`.
-4. Depois de gerados:
-   - Fotos → substituem os `.svg` em `assets/img/` (pode trocar a
-     extensão no `src` do `index.html` para `.jpg`/`.webp`).
-   - Vídeos re-encodados → salvos como `assets/video/hero-montagem.mp4`
-     e `assets/video/caixa-abrindo.mp4`.
-   - Pulseiras (5 PNGs transparentes descritos em
-     `prompts/site/08-feature-pulseira-configurador.md`) → pode
-     substituir os `.strap-swatch` em CSS por `background-image`
-     apontando para os PNGs reais, mantendo a mesma estrutura de HTML.
+A lista exata de arquivos, nomes e prompts está em
+**`prompts/ASSETS-CHECKLIST.md`** — comece por ali.
+
+Resumo do fluxo:
+
+1. Gere as imagens (Nano Banana 2 / Gemini) e vídeos (Veo 3.1 Lite) rodando
+   os prompts em `prompts/site/0X-*.md` e `prompts/videos/`, anexando uma
+   foto frontal real do Orient como referência em cada um.
+2. Solte os arquivos brutos em **`assets/_incoming/`** (pasta de staging,
+   não versionada — qualquer nome serve) ou anexe direto na conversa.
+3. Para os vídeos, rode o script de re-encode (aplica os parâmetros
+   obrigatórios `-g 1 -keyint_min 1` para o scroll-scrubbing funcionar):
+
+   ```bash
+   cd orient/scripts
+   ./reencode-video.sh ../assets/_incoming/hero-raw.mp4 ../assets/video/hero-montagem.mp4
+   ./reencode-video.sh ../assets/_incoming/caixa-raw.mp4 ../assets/video/caixa-abrindo.mp4 --trim 5
+   ```
+
+   Suporta também `--delogo X:Y:W:H` (remove a marca d'água do Veo, se
+   houver) e `--fps N`, conforme os prompts de vídeo pedem.
+4. As imagens (fotos) substituem os `.svg` em `assets/img/` — pode trocar
+   a extensão no `src` do `index.html` para `.jpg`/`.webp` conforme o
+   formato final.
+5. Pulseiras (5 PNGs transparentes, opcional — ver checklist) → substitua
+   os `.strap-swatch` em CSS por `background-image` apontando para os
+   PNGs reais, mantendo a mesma estrutura de HTML.
 
 ## Configurador de pulseira
 
