@@ -7,14 +7,15 @@ Landing page para estúdio de fotografia e filmagem de casamentos e eventos soci
 ```
 ├── index.html              # Página principal
 ├── admin/
-│   └── index.html          # Instruções para o cliente cadastrar um evento novo
+│   ├── index.html          # Painel de upload de fotos (para o cliente)
+│   └── js/upload.js        # Lógica do painel: senha + envio pro Cloudinary
 ├── assets/
 │   ├── css/
 │   │   ├── tailwind.css    # CSS gerado pelo Tailwind (não editar à mão)
-│   │   └── styles.css      # Estilos customizados (lightbox, carrossel, cards de evento)
+│   │   └── styles.css      # Estilos customizados (lightbox, carrossel, animações)
 │   ├── js/
-│   │   ├── site-config.js  # Configuração central (Formspree, WhatsApp, eventos)
-│   │   └── main.js         # Toda a interatividade (menu, filtros, formulário, eventos, etc.)
+│   │   ├── site-config.js  # Configuração central (Formspree, WhatsApp, Cloudinary, senha)
+│   │   └── main.js         # Toda a interatividade (menu, filtros, formulário, galeria, etc.)
 │   └── favicon.svg
 ├── src/
 │   └── input.css           # Fonte do Tailwind (@tailwind base/components/utilities)
@@ -76,72 +77,72 @@ A **galeria do portfólio** funciona diferente: ela é carregada automaticamente
 
 Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Graph e adicione um `<link rel="canonical">` com o domínio final do site.
 
-### 5. Eventos do cliente (a Adonai FotoCine posta os próprios eventos)
+### 5. Painel de upload (o cliente posta as próprias fotos)
 
-Existe uma seção **"Últimos eventos"** no site e uma página **`/admin/`**
-com instruções, para a Adonai FotoCine cadastrar cada evento sozinha, sem
-mexer em código. Não usa nenhum serviço pago nem chave secreta — só um
-Google Formulário (que alimenta uma Planilha) e um álbum do Google Fotos,
-ferramentas que o estúdio já deve ter/usar.
+Existe um painel em **`/admin/`** onde a Adonai FotoCine consegue subir as
+fotos de cada evento sozinha, sem precisar editar código nem depender de
+quem desenvolveu o site. As fotos enviadas por lá aparecem automaticamente
+na galeria do portfólio em poucos segundos.
 
-**Como funciona:** depois de cada evento, o cliente sobe as fotos num
-álbum do Google Fotos e preenche um formulário curto (nome, data,
-categoria, link do álbum). O site busca as respostas desse formulário
-direto de uma planilha do Google publicada como CSV, e monta os cards
-automaticamente — sem backend, sem senha, sem conta paga.
+**Como funciona:** o painel sobe as fotos direto do navegador para o
+[Cloudinary](https://cloudinary.com) (serviço de hospedagem de imagens,
+gratuito até um volume generoso — suficiente para um estúdio pequeno/médio).
+Não existe servidor/backend: a página principal do site busca as fotos mais
+recentes direto do Cloudinary a cada carregamento, filtradas por categoria.
 
 #### Configuração (única vez, ~5 minutos)
 
-1. Crie um **Google Formulário** ([forms.google.com](https://forms.google.com))
-   com exatamente estas 4 perguntas, **nesta ordem**:
-   1. `Nome do evento` — resposta curta
-   2. `Data do evento` — resposta curta (ex: peça o formato "dd/mm/aaaa" na descrição da pergunta)
-   3. `Categoria` — múltipla escolha, com as opções: `Casamento`, `Pré-Wedding`, `Making Of`, `Vídeo`
-   4. `Link do álbum do Google Fotos` — resposta curta
-
-   A ordem importa: o site lê as colunas da planilha de respostas nessa
-   sequência.
-
-2. Na aba **Respostas** do formulário, clique no ícone verde do Sheets
-   para criar a planilha vinculada automaticamente.
-3. Na planilha criada, vá em **Arquivo → Compartilhar → Publicar na
-   web**. Escolha a aba de respostas, formato **CSV**, e clique em
-   **Publicar**. Copie a URL gerada (algo como
-   `https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv`).
-4. Copie também o **link para preencher o formulário** (botão "Enviar" no
-   Google Forms → ícone de link).
+1. Crie uma conta gratuita em [cloudinary.com](https://cloudinary.com).
+2. No Dashboard, copie o **Cloud name** (aparece no topo).
+3. Vá em **Settings → Upload → Upload presets → Add upload preset**:
+   - Signing Mode: **Unsigned**
+   - Dê um nome ao preset (ex: `adonai_gallery`) e salve.
+4. Vá em **Settings → Security** e habilite a opção de **listagem pública
+   de recursos** ("Resource list" / "Allow list resources"). Sem isso, o
+   site não consegue buscar as fotos publicamente.
 5. Edite `assets/js/site-config.js`:
 
    ```js
-   EVENTS_FORM_URL: "https://forms.gle/xxxxxxxx",
-   EVENTS_SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/e/xxxxx/pub?output=csv",
+   CLOUDINARY_CLOUD_NAME: "seu-cloud-name-aqui",
+   CLOUDINARY_UPLOAD_PRESET: "adonai_gallery",
    ```
 
-6. Publique (`git add`, `commit`, `push` — não precisa rodar `build:css`,
-   essa parte não mexe no Tailwind).
+6. Troque a senha do painel (senha de fábrica: `adonai2026` — **troque antes
+   de divulgar o link para o cliente**). Para gerar o hash de uma senha
+   nova, abra o console do navegador em qualquer página do site e rode:
+
+   ```js
+   crypto.subtle.digest("SHA-256", new TextEncoder().encode("sua-senha-nova"))
+     .then(b => console.log(Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,"0")).join("")))
+   ```
+
+   Cole o resultado em `ADMIN_PASSWORD_SHA256` em `site-config.js`.
+
+7. Rode `npm run build:css` de novo (a pasta `admin/` também usa Tailwind) e publique.
 
 #### Uso pelo cliente
 
-1. Depois de cada evento, o cliente acessa `seudominio.com/admin/` — link
-   fixo que você passa a ele (não aparece no menu do site).
-2. Segue as duas instruções da página: sobe as fotos num álbum do Google
-   Fotos e clica em "Abrir formulário do evento".
-3. Preenche as 4 perguntas e envia.
-4. Em poucos minutos (o tempo do Google atualizar o CSV publicado, geralmente
-   quase instantâneo) o evento aparece na seção "Últimos eventos" do site.
+1. Acesse `seudominio.com/admin/` (não aparece no menu do site — é um link
+   direto que você passa só para o cliente).
+2. Digite a senha combinada.
+3. Preencha nome do evento, data, categoria (Casamento, Pré-Wedding, Making
+   Of ou Vídeo) e selecione as fotos.
+4. Clique em "Enviar fotos" — acompanha o progresso na tela.
+5. As fotos já aparecem no site (aba "Ver no site" ao final do envio).
 
 #### Limitações — importante estar ciente
 
-- **Não existe controle de acesso no Google Formulário** por padrão —
-  qualquer pessoa com o link consegue enviar uma resposta. Para um
-  estúdio pequeno isso costuma ser um risco baixo (o link não é
-  divulgado publicamente), mas se quiser mais controle dá para restringir
-  o formulário a contas de um domínio específico nas configurações dele.
-- As fotos em si continuam hospedadas no Google Fotos do cliente, fora do
-  seu controle — se ele apagar o álbum ou mudar a permissão de
-  compartilhamento, o link para de funcionar no site.
-- Para remover um evento errado, edite/apague a linha correspondente
-  direto na planilha do Google Sheets.
+- **A senha do painel não é autenticação de verdade.** É uma barreira
+  simples (senha combinada + hash SHA-256), suficiente para uso interno,
+  mas visível/quebrável por alguém com conhecimento técnico que realmente
+  queira tentar. Não é o lugar para dados sensíveis de clientes — só fotos
+  de divulgação do portfólio.
+- Sem edição/exclusão pelo painel ainda: para remover uma foto publicada
+  por engano, é preciso apagar pelo painel do próprio Cloudinary
+  (Media Library).
+- O plano gratuito do Cloudinary tem limite de armazenamento/tráfego
+  mensal — para um estúdio com muitos eventos grandes, vale acompanhar o
+  uso no dashboard deles e considerar um plano pago se necessário.
 
 ## Funcionalidades incluídas
 
@@ -149,7 +150,7 @@ automaticamente — sem backend, sem senha, sem conta paga.
 - Seção "Sobre" com contadores animados ao entrar na viewport.
 - Grade de serviços.
 - Portfólio com filtros por categoria e lightbox com navegação por teclado (Esc / setas).
-- Seção "Últimos eventos" + página `/admin/` para o cliente cadastrar os próprios eventos, sem mexer em código — ver seção "Eventos do cliente" acima.
+- Painel de upload (`/admin/`) para o cliente postar as próprias fotos de cada evento, sem mexer em código — ver seção "Painel de upload" acima.
 - Carrossel de depoimentos com autoplay, setas, dots e suporte a swipe no touch.
 - Formulário de contato com validação client-side, proteção anti-spam (honeypot) e os 4 estados visuais (ocioso, carregando, sucesso, erro).
 - Botão flutuante de WhatsApp e "voltar ao topo".
