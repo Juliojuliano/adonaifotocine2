@@ -69,7 +69,16 @@ As imagens são geradas dinamicamente via [Lorem Picsum](https://picsum.photos) 
 - Hero, foto "Sobre" e imagem do Open Graph: busque por `picsum.photos` em `index.html`.
 - Galeria do portfólio: edite o array `galleryData` no início de `assets/js/main.js` — cada item tem `seed` (usado para montar a URL), `category` (`casamento`, `pre-wedding`, `making-of`, `video`) e `alt` (texto alternativo para acessibilidade). Substitua `seed` por uma URL de imagem própria ou ajuste o template de URL.
 
-### 4. SEO
+### 4. Vídeo institucional
+
+A seção "Vídeo Institucional" (`#video-institucional`) tem um player que carrega o vídeo do YouTube somente quando o visitante clica em play (sem impactar a performance da página).
+
+1. Produza o vídeo (roteiro de narração e storyboard prontos em [`docs/roteiro-video-institucional.md`](docs/roteiro-video-institucional.md)).
+2. Suba no YouTube (pode ser "não listado") e copie o ID do vídeo.
+3. Em `index.html`, busque por `SEU_ID_DO_YOUTUBE` e substitua pelo ID real no atributo `data-video-id`.
+4. Substitua a imagem de prévia: busque por `adonai-video-poster` e troque pela thumbnail real do vídeo.
+
+### 5. SEO
 
 Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Graph e adicione um `<link rel="canonical">` com o domínio final do site.
 
