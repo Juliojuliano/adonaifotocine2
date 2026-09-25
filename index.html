@@ -44,6 +44,7 @@
     <ul class="hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide uppercase text-white/90">
       <li><a href="#topo" class="nav-link" data-nav>Início</a></li>
       <li><a href="#sobre" class="nav-link" data-nav>Sobre</a></li>
+      <li><a href="#video-institucional" class="nav-link" data-nav>Vídeo</a></li>
       <li><a href="#servicos" class="nav-link" data-nav>Serviços</a></li>
       <li><a href="#portfolio" class="nav-link" data-nav>Portfólio</a></li>
       <li><a href="#depoimentos" class="nav-link" data-nav>Depoimentos</a></li>
@@ -71,6 +72,7 @@
     <ul class="flex flex-col px-6 py-4 gap-1 text-white/90 font-medium">
       <li><a href="#topo" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Início</a></li>
       <li><a href="#sobre" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Sobre</a></li>
+      <li><a href="#video-institucional" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Vídeo</a></li>
       <li><a href="#servicos" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Serviços</a></li>
       <li><a href="#portfolio" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Portfólio</a></li>
       <li><a href="#depoimentos" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Depoimentos</a></li>
@@ -160,6 +162,25 @@
             <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Prêmios recebidos</p>
           </div>
         </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== VÍDEO INSTITUCIONAL ===================== -->
+  <section id="video-institucional" class="py-20 md:py-28 px-5 bg-brand-dark text-white scroll-mt-20">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="uppercase tracking-[0.25em] text-brand-gold text-xs md:text-sm font-semibold mb-4 reveal">Conheça nossa história</p>
+      <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-4 reveal">Vídeo Institucional</h2>
+      <p class="text-white/70 max-w-2xl mx-auto mb-12 reveal">Uma narrativa animada, com locução, que apresenta quem somos e como cuidamos de cada história que registramos.</p>
+
+      <div class="reveal">
+        <div class="video-frame" id="video-player" data-video-id="SEU_ID_DO_YOUTUBE">
+          <img src="https://picsum.photos/seed/adonai-video-poster/1280/720" alt="Prévia do vídeo institucional da Adonai Fotocine" class="video-poster" loading="lazy" width="1280" height="720">
+          <button type="button" class="video-play-btn" aria-label="Reproduzir vídeo institucional com narração">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <p class="text-white/50 text-xs mt-4">Vídeo com narração em áudio e legendas disponíveis.</p>
       </div>
     </div>
   </section>

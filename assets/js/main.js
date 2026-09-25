@@ -58,7 +58,7 @@
   });
 
   /* ===================== Scroll-spy (nav ativo) ===================== */
-  const sections = ["topo", "sobre", "servicos", "portfolio", "depoimentos", "contato"]
+  const sections = ["topo", "sobre", "video-institucional", "servicos", "portfolio", "depoimentos", "contato"]
     .map((id) => document.getElementById(id))
     .filter(Boolean);
   const navLinks = document.querySelectorAll(".nav-link");
@@ -234,6 +234,26 @@
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
+
+  /* ===================== Vídeo institucional ===================== */
+  const videoPlayer = document.getElementById("video-player");
+  if (videoPlayer) {
+    const playBtn = videoPlayer.querySelector(".video-play-btn");
+    playBtn.addEventListener("click", () => {
+      const videoId = videoPlayer.dataset.videoId;
+      if (!videoId || videoId === "SEU_ID_DO_YOUTUBE") {
+        alert("Vídeo institucional ainda não configurado. Defina data-video-id em index.html.");
+        return;
+      }
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&cc_load_policy=1`;
+      iframe.title = "Vídeo institucional Adonai Fotocine";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      videoPlayer.classList.add("is-playing");
+      videoPlayer.appendChild(iframe);
+    });
+  }
 
   /* ===================== Carrossel de depoimentos ===================== */
   const track = document.getElementById("testimonial-track");
