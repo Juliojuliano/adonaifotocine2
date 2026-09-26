@@ -6,12 +6,17 @@ Landing page para estúdio de fotografia e filmagem de casamentos e eventos soci
 
 ```
 ├── index.html              # Página principal
+├── admin/
+│   ├── index.html          # Painel do fotógrafo (senha + upload de fotos)
+│   └── js/
+│       └── upload.js       # Portão de senha, compressão e envio ao Cloudinary
 ├── assets/
 │   ├── css/
 │   │   ├── tailwind.css    # CSS gerado pelo Tailwind (não editar à mão)
 │   │   └── styles.css      # Estilos customizados (lightbox, carrossel, animações)
 │   ├── js/
-│   │   └── main.js         # Toda a interatividade (menu, filtros, formulário, etc.)
+│   │   ├── site-config.js  # Configuração compartilhada (site + painel)
+│   │   └── main.js         # Toda a interatividade (menu, filtros, formulário, galeria, etc.)
 │   └── favicon.svg
 ├── src/
 │   └── input.css           # Fonte do Tailwind (@tailwind base/components/utilities)
@@ -43,12 +48,13 @@ Para ativar o envio de e-mails de verdade:
 
 1. Crie uma conta gratuita em [Formspree](https://formspree.io) (ou serviço equivalente).
 2. Crie um formulário e copie o endpoint gerado (algo como `https://formspree.io/f/xxxxxxxx`).
-3. Edite `assets/js/main.js` e substitua o valor de `CONFIG.FORM_ENDPOINT` no topo do arquivo.
+3. Edite `assets/js/site-config.js` e substitua o valor de `FORM_ENDPOINT`.
 
 ```js
-const CONFIG = {
+window.SITE_CONFIG = {
   FORM_ENDPOINT: "https://formspree.io/f/xxxxxxxx", // <- cole aqui
-  WHATSAPP_NUMBER: "5511900000000"
+  WHATSAPP_NUMBER: "5511900000000",
+  // ...
 };
 ```
 
@@ -56,7 +62,7 @@ const CONFIG = {
 
 Substitua os dados de exemplo (placeholders) pelos dados reais do negócio:
 
-- Número de WhatsApp: procure por `5511900000000` em `index.html` e `assets/js/main.js` e troque pelo número real (formato DDI+DDD+número, só dígitos).
+- Número de WhatsApp: procure por `5511900000000` em `index.html` e `assets/js/site-config.js` e troque pelo número real (formato DDI+DDD+número, só dígitos).
 - E-mail: `contato@adonaifotocine.com.br` → e-mail real.
 - Redes sociais: links de Instagram/Facebook em `index.html` (seções "Contato" e rodapé).
 - Endereço/região de atendimento e horário de funcionamento (seção "Contato").
@@ -67,9 +73,30 @@ Substitua os dados de exemplo (placeholders) pelos dados reais do negócio:
 As imagens são geradas dinamicamente via [Lorem Picsum](https://picsum.photos) (`https://picsum.photos/seed/...`) como placeholders reais e estáveis. Substitua pelas fotos reais do portfólio:
 
 - Hero, foto "Sobre" e imagem do Open Graph: busque por `picsum.photos` em `index.html`.
-- Galeria do portfólio: edite o array `galleryData` no início de `assets/js/main.js` — cada item tem `seed` (usado para montar a URL), `category` (`casamento`, `pre-wedding`, `making-of`, `video`) e `alt` (texto alternativo para acessibilidade). Substitua `seed` por uma URL de imagem própria ou ajuste o template de URL.
+- Galeria do portfólio: assim que o painel do fotógrafo (seção 4 abaixo) estiver configurado, as fotos reais substituem automaticamente os placeholders. Enquanto isso não acontece (ou se preferir manter uma amostra fixa), edite o array `fallbackGalleryData` no início de `assets/js/main.js` — cada item tem `seed` (usado para montar a URL), `category` (`casamento`, `pre-wedding`, `making-of`, `video`) e `alt` (texto alternativo para acessibilidade).
 
-### 4. SEO
+### 4. Painel do fotógrafo (upload de fotos dos eventos)
+
+O site tem um painel simples em `/admin/` para a Adonai postar as fotos de cada evento direto do navegador, sem editar código e sem precisar de um backend próprio. O upload vai direto para o [Cloudinary](https://cloudinary.com) (plano gratuito), e a galeria do site busca as fotos mais recentes automaticamente.
+
+**Antes de enviar, cada foto é redimensionada e comprimida no próprio navegador** (limite configurável em `UPLOAD_MAX_DIMENSION_PX`/`UPLOAD_JPEG_QUALITY`, padrão 2000px no lado maior e qualidade JPEG 82%), para não subir arquivos pesados nem estourar a cota gratuita.
+
+Passo a passo:
+
+1. Crie uma conta gratuita em [cloudinary.com](https://cloudinary.com).
+2. No Dashboard, copie o **Cloud name**.
+3. Vá em **Settings → Upload → Upload presets → Add upload preset**, marque o modo como **Unsigned** e salve. Copie o nome do preset.
+4. Em **Settings → Security → Restricted image types**, garanta que a listagem por tag (`List` resource type) esteja habilitada — é o que permite a galeria pública buscar as fotos sem chave secreta.
+5. Edite `assets/js/site-config.js` e preencha `CLOUDINARY_CLOUD_NAME` e `CLOUDINARY_UPLOAD_PRESET`.
+6. Defina a senha do painel: gere o hash SHA-256 da senha escolhida (instruções em comentário no próprio arquivo) e cole em `ADMIN_PASSWORD_SHA256`.
+7. Acesse `/admin/` (ou o link "Área do fotógrafo" no rodapé do site), informe a senha, preencha nome/data/categoria do evento e selecione as fotos.
+
+**Limitações importantes:**
+- A senha do painel é só uma senha combinada (guardada como hash no JS do site), não é autenticação de verdade — qualquer pessoa com a senha e o link consegue postar fotos. Não use para dados sensíveis de clientes.
+- O upload é "unsigned": qualquer pessoa que descubra o cloud name + upload preset também consegue subir arquivos para a conta Cloudinary. Para reduzir o risco, no preset do Cloudinary limite formatos aceitos (`image`), tamanho máximo e, se quiser, restrinja por pasta.
+- Sem o Cloudinary configurado, o painel mostra um aviso e a galeria do site continua funcionando com as fotos de exemplo (fallback).
+
+### 5. SEO
 
 Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Graph e adicione um `<link rel="canonical">` com o domínio final do site.
 
@@ -79,6 +106,7 @@ Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Gra
 - Seção "Sobre" com contadores animados ao entrar na viewport.
 - Grade de serviços.
 - Portfólio com filtros por categoria e lightbox com navegação por teclado (Esc / setas).
+- Painel do fotógrafo (`/admin/`) para postar fotos dos eventos direto do navegador, com compressão automática antes do envio.
 - Carrossel de depoimentos com autoplay, setas, dots e suporte a swipe no touch.
 - Formulário de contato com validação client-side, proteção anti-spam (honeypot) e os 4 estados visuais (ocioso, carregando, sucesso, erro).
 - Botão flutuante de WhatsApp e "voltar ao topo".

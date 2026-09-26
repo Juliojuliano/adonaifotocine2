@@ -3,17 +3,13 @@
 
   /* =====================================================
      CONFIGURAÇÃO
-     Substitua pelos dados reais do seu negócio / integração.
-     Para o formulário de contato funcionar de verdade, crie uma
-     conta gratuita em https://formspree.io, gere um endpoint
-     ("https://formspree.io/f/xxxxxxx") e cole abaixo.
+     Centralizada em assets/js/site-config.js (compartilhada com
+     o painel do fotógrafo em admin/). Edite os valores lá.
   ===================================================== */
-  const CONFIG = {
-    FORM_ENDPOINT: "https://formspree.io/f/SEU_FORM_ID",
-    WHATSAPP_NUMBER: "5511900000000"
-  };
+  const CONFIG = window.SITE_CONFIG;
 
   const isFormConfigured = !CONFIG.FORM_ENDPOINT.includes("SEU_FORM_ID");
+  const isCloudinaryConfigured = !CONFIG.CLOUDINARY_CLOUD_NAME.includes("SEU_CLOUD_NAME");
 
   /* ===================== Ano no rodapé ===================== */
   const yearEl = document.getElementById("year");
@@ -123,7 +119,11 @@
   counters.forEach((el) => countersObserver.observe(el));
 
   /* ===================== Portfólio: dados + render ===================== */
-  const galleryData = [
+
+  // Fallback estático (placeholders) — usado enquanto o Cloudinary não
+  // estiver configurado, ou se a busca das fotos reais falhar por
+  // qualquer motivo. O site nunca fica com a galeria vazia.
+  const fallbackGalleryData = [
     { id: 1, category: "casamento", seed: "adonai-wed-1", alt: "Noivos trocando alianças durante a cerimônia" },
     { id: 2, category: "casamento", seed: "adonai-wed-2", alt: "Noiva sorrindo ao ser preparada para a cerimônia" },
     { id: 3, category: "pre-wedding", seed: "adonai-pw-1", alt: "Casal em ensaio pré-wedding ao entardecer" },
@@ -145,14 +145,45 @@
     video: "Vídeo"
   };
 
+  // Toda foto enviada pelo fotógrafo no painel (/admin/) recebe, além da
+  // tag da categoria, esta tag em comum — é o que garante que só fotos
+  // da Adonai Fotocine apareçam aqui, mesmo que o cloud name do
+  // Cloudinary seja reaproveitado para outra coisa no futuro.
+  const CLOUDINARY_GALLERY_TAG = "adonai-gallery";
+
+  function cloudinaryThumbUrl(publicId, format) {
+    return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_fill,w_700,h_700/${publicId}.${format}`;
+  }
+  function cloudinaryFullUrl(publicId, format) {
+    return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,w_1600/${publicId}.${format}`;
+  }
+
+  function fallbackThumbUrl(item) {
+    return `https://picsum.photos/seed/${item.seed}/700/700`;
+  }
+  function fallbackFullUrl(item) {
+    return `https://picsum.photos/seed/${item.seed}/1400/1400`;
+  }
+
+  let galleryData = fallbackGalleryData.map((item) => ({
+    ...item,
+    thumbUrl: fallbackThumbUrl(item),
+    fullUrl: fallbackFullUrl(item)
+  }));
+
   const gallery = document.getElementById("gallery");
+  const galleryStatus = document.getElementById("gallery-status");
+  const activeFilter = () =>
+    document.querySelector(".filter-btn.is-active")?.dataset.filter || "todos";
 
   function renderGallery() {
+    const currentFilter = activeFilter();
+
     gallery.innerHTML = galleryData
       .map(
         (item, index) => `
-      <button type="button" class="gallery-item" data-category="${item.category}" data-index="${index}" aria-label="Ampliar foto: ${item.alt}">
-        <img src="https://picsum.photos/seed/${item.seed}/700/700" alt="${item.alt}" loading="lazy" width="700" height="700">
+      <button type="button" class="gallery-item${currentFilter !== "todos" && item.category !== currentFilter ? " is-hidden" : ""}" data-category="${item.category}" data-index="${index}" aria-label="Ampliar foto: ${item.alt}">
+        <img src="${item.thumbUrl}" alt="${item.alt}" loading="lazy" width="700" height="700">
         <span class="gallery-overlay"><span>${categoryLabels[item.category]}</span></span>
       </button>`
       )
@@ -163,6 +194,64 @@
     });
   }
   renderGallery();
+
+  // Busca as fotos reais enviadas pelo fotógrafo (via /admin/) direto do
+  // Cloudinary, sem precisar de backend: cada categoria tem sua própria
+  // tag, e o Cloudinary expõe uma listagem pública por tag (precisa
+  // estar habilitada nas configurações da conta — ver README).
+  async function loadCloudinaryGallery() {
+    if (!isCloudinaryConfigured) return;
+
+    const categories = Object.keys(categoryLabels);
+    try {
+      const responses = await Promise.all(
+        categories.map((category) =>
+          fetch(
+            `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/list/${encodeURIComponent(
+              category
+            )}.json`
+          )
+            .then((res) => (res.ok ? res.json() : { resources: [] }))
+            .then((data) => ({ category, resources: data.resources || [] }))
+            .catch(() => ({ category, resources: [] }))
+        )
+      );
+
+      const items = [];
+      responses.forEach(({ category, resources }) => {
+        resources.forEach((res) => {
+          items.push({
+            id: res.public_id,
+            category,
+            format: res.format,
+            version: res.version,
+            alt: `Foto de ${categoryLabels[category].toLowerCase()} — Adonai Fotocine`,
+            thumbUrl: cloudinaryThumbUrl(res.public_id, res.format),
+            fullUrl: cloudinaryFullUrl(res.public_id, res.format)
+          });
+        });
+      });
+
+      // Mais recentes primeiro.
+      items.sort((a, b) => b.version - a.version);
+
+      if (items.length > 0) {
+        galleryData = items;
+        renderGallery();
+        if (galleryStatus) galleryStatus.textContent = "";
+      } else if (galleryStatus) {
+        galleryStatus.textContent =
+          "Nenhuma foto publicada pelo fotógrafo ainda — mostrando fotos de exemplo.";
+      }
+    } catch (err) {
+      // Mantém o fallback estático em qualquer erro de rede/config.
+      if (galleryStatus) {
+        galleryStatus.textContent =
+          "Não foi possível carregar as fotos mais recentes agora — mostrando fotos de exemplo.";
+      }
+    }
+  }
+  loadCloudinaryGallery();
 
   /* ===================== Filtros do portfólio ===================== */
   const filterButtons = document.querySelectorAll(".filter-btn");
@@ -191,7 +280,7 @@
 
   function updateLightboxImage() {
     const item = galleryData[currentIndex];
-    lightboxImg.src = `https://picsum.photos/seed/${item.seed}/1400/1400`;
+    lightboxImg.src = item.fullUrl;
     lightboxImg.alt = item.alt;
     lightboxCaption.textContent = `${categoryLabels[item.category]} — ${item.alt}`;
   }
