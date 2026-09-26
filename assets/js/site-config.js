@@ -10,7 +10,7 @@ window.SITE_CONFIG = {
   FORM_ENDPOINT: "https://formspree.io/f/SEU_FORM_ID",
 
   // WhatsApp (DDI + DDD + número, só dígitos)
-  WHATSAPP_NUMBER: "5511900000000",
+  WHATSAPP_NUMBER: "5511965754892",
 
   // Cloudinary — https://cloudinary.com (conta gratuita)
   // Cloud name: aparece no topo do Dashboard do Cloudinary.
