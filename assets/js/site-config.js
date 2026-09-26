@@ -14,7 +14,7 @@ window.SITE_CONFIG = {
 
   // Cloudinary — https://cloudinary.com (conta gratuita)
   // Cloud name: aparece no topo do Dashboard do Cloudinary.
-  CLOUDINARY_CLOUD_NAME: "SEU_CLOUD_NAME",
+  CLOUDINARY_CLOUD_NAME: "f5ztoifv",
   // Upload preset "unsigned": Settings → Upload → Upload presets → Add.
   CLOUDINARY_UPLOAD_PRESET: "SEU_UPLOAD_PRESET",
 
