@@ -16,7 +16,7 @@ window.SITE_CONFIG = {
   // Cloud name: aparece no topo do Dashboard do Cloudinary.
   CLOUDINARY_CLOUD_NAME: "f5ztoifv",
   // Upload preset "unsigned": Settings → Upload → Upload presets → Add.
-  CLOUDINARY_UPLOAD_PRESET: "SEU_UPLOAD_PRESET",
+  CLOUDINARY_UPLOAD_PRESET: "ml_default",
 
   // Senha do painel do fotógrafo (admin/), em SHA-256 — nunca coloque a
   // senha em texto puro aqui. Senha padrão de fábrica: "adonai2026"
