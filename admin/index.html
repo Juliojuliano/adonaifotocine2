@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de fotos — Adonai Fotocine</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="../assets/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assets/css/tailwind.css" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="bg-brand-cream text-brand-ink font-sans min-h-screen">
+
+  <header class="border-b border-black/5 bg-white">
+    <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
+      <a href="../index.html" class="font-serif text-lg font-semibold text-brand-dark">Adonai Fotocine</a>
+      <span class="text-xs uppercase tracking-[0.2em] text-brand-goldtext">Painel do fotógrafo</span>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-5 py-12">
+
+    <!-- ===================== AVISO: CLOUDINARY NÃO CONFIGURADO ===================== -->
+    <div id="config-warning" class="hidden mb-8 rounded-xl border border-amber-300 bg-amber-50 p-5 text-sm text-amber-900">
+      <p class="font-semibold mb-1">Este painel ainda não está conectado ao serviço de fotos.</p>
+      <p>Falta configurar o Cloudinary em <code class="bg-amber-100 px-1 rounded">assets/js/site-config.js</code> (chaves <code class="bg-amber-100 px-1 rounded">CLOUDINARY_CLOUD_NAME</code> e <code class="bg-amber-100 px-1 rounded">CLOUDINARY_UPLOAD_PRESET</code>). Veja o passo a passo no <code class="bg-amber-100 px-1 rounded">README.md</code> do projeto, seção "Painel do fotógrafo".</p>
+    </div>
+
+    <!-- ===================== TELA DE SENHA ===================== -->
+    <section id="gate" class="reveal is-visible">
+      <div class="max-w-sm mx-auto bg-white rounded-2xl border border-black/5 shadow-sm p-8 text-center">
+        <h1 class="font-serif text-2xl font-semibold mb-2">Acesso ao painel</h1>
+        <p class="text-brand-ink/60 text-sm mb-6">Digite a sua senha para postar as fotos de um evento.</p>
+
+        <form id="gate-form" class="text-left" novalidate>
+          <label for="gate-password" class="sr-only">Senha</label>
+          <input
+            type="password"
+            id="gate-password"
+            name="password"
+            placeholder="Senha do painel"
+            autocomplete="current-password"
+            class="w-full rounded-lg border border-black/10 px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-brand-gold"
+            required
+          />
+          <p id="gate-error" class="text-sm text-red-600 mb-3 min-h-[1.25rem]"></p>
+          <button type="submit" class="w-full rounded-lg bg-brand-dark text-white font-medium py-3 hover:bg-brand-charcoal transition">
+            Entrar
+          </button>
+        </form>
+
+        <p class="text-xs text-brand-ink/40 mt-6">
+          Este painel não usa login de verdade — é só uma senha combinada,
+          suficiente para uso interno. Não poste dados sensíveis de clientes aqui.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== PAINEL DE UPLOAD ===================== -->
+    <section id="panel" class="hidden">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="font-serif text-2xl font-semibold">Postar fotos de um evento</h1>
+          <p class="text-brand-ink/60 text-sm mt-1">As fotos são otimizadas automaticamente no seu navegador e aparecem no site em poucos segundos.</p>
+        </div>
+        <button type="button" id="logout-btn" class="text-sm text-brand-ink/50 hover:text-brand-ink underline">Sair</button>
+      </div>
+
+      <form id="upload-form" class="bg-white rounded-2xl border border-black/5 shadow-sm p-6 md:p-8" novalidate>
+        <div class="grid md:grid-cols-2 gap-5 mb-5">
+          <div>
+            <label for="event-name" class="block text-sm font-medium mb-1.5">Nome do evento</label>
+            <input
+              type="text"
+              id="event-name"
+              name="eventName"
+              placeholder="Ex: Casamento Ana e Pedro"
+              class="w-full rounded-lg border border-black/10 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-gold"
+              required
+            />
+          </div>
+          <div>
+            <label for="event-date" class="block text-sm font-medium mb-1.5">Data do evento</label>
+            <input
+              type="date"
+              id="event-date"
+              name="eventDate"
+              class="w-full rounded-lg border border-black/10 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-gold"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label for="event-category" class="block text-sm font-medium mb-1.5">Categoria</label>
+          <select
+            id="event-category"
+            name="eventCategory"
+            class="w-full rounded-lg border border-black/10 px-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold"
+            required
+          >
+            <option value="casamento">Casamento</option>
+            <option value="pre-wedding">Pré-Wedding</option>
+            <option value="making-of">Making Of</option>
+            <option value="video">Vídeo (fotos still)</option>
+          </select>
+        </div>
+
+        <div class="mb-2">
+          <label for="event-photos" class="block text-sm font-medium mb-1.5">Fotos</label>
+          <input
+            type="file"
+            id="event-photos"
+            name="photos"
+            accept="image/*"
+            multiple
+            class="w-full rounded-lg border border-dashed border-black/20 px-4 py-6 text-sm file:mr-4 file:rounded-lg file:border-0 file:bg-brand-gold file:text-white file:px-4 file:py-2 file:font-medium"
+            required
+          />
+          <p class="text-xs text-brand-ink/40 mt-1.5">Pode selecionar várias fotos de uma vez. Formatos: JPG, PNG ou WEBP.</p>
+        </div>
+
+        <p id="compression-note" class="text-xs text-brand-ink/40 mb-6"></p>
+
+        <button
+          type="submit"
+          id="upload-submit"
+          class="w-full rounded-lg bg-brand-dark text-white font-medium py-3.5 hover:bg-brand-charcoal transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Enviar fotos
+        </button>
+      </form>
+
+      <!-- Progresso -->
+      <div id="upload-progress" class="hidden mt-6 bg-white rounded-2xl border border-black/5 shadow-sm p-6">
+        <p id="upload-summary" class="font-medium mb-3"></p>
+        <ul id="upload-list" class="space-y-1.5 text-sm"></ul>
+        <a href="../index.html#portfolio" id="upload-done-link" class="hidden mt-5 inline-flex items-center gap-2 text-brand-goldtext font-medium hover:underline">
+          Ver no site →
+        </a>
+      </div>
+
+      <!-- Fotos já publicadas (com opção de excluir) -->
+      <div class="mt-10">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-serif text-xl font-semibold">Fotos publicadas</h2>
+          <button type="button" id="refresh-published-btn" class="text-sm text-brand-ink/50 hover:text-brand-ink underline">Atualizar</button>
+        </div>
+        <p id="published-status" class="text-sm text-brand-ink/50 mb-4" role="status" aria-live="polite"></p>
+        <div id="published-events" class="space-y-6"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/site-config.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>

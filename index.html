@@ -6,6 +6,7 @@
 <title>Adonai Fotocine | Fotografia e Filmagem de Casamentos</title>
 <meta name="description" content="Adonai Fotocine — fotografia e filmagem cinematográfica de casamentos, pré-wedding, aniversários e formaturas. Eternizamos os momentos mais importantes da sua história.">
 <meta name="theme-color" content="#141414">
+<link rel="canonical" href="https://adonaifotocine2.vercel.app/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -50,7 +51,7 @@
       <li><a href="#contato" class="nav-link" data-nav>Contato</a></li>
     </ul>
 
-    <a href="https://wa.me/5511900000000?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!"
+    <a href="https://wa.me/5511965754892?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!"
        target="_blank" rel="noopener noreferrer"
        class="hidden lg:inline-flex items-center gap-2 bg-brand-gold hover:bg-brand-golddark text-brand-dark font-semibold text-sm px-5 py-2.5 rounded-full transition-colors">
       Fale Conosco
@@ -76,7 +77,7 @@
       <li><a href="#depoimentos" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Depoimentos</a></li>
       <li><a href="#contato" class="block py-3 mobile-nav-link" data-nav>Contato</a></li>
       <li class="pt-2">
-        <a href="https://wa.me/5511900000000" target="_blank" rel="noopener noreferrer" class="flex justify-center items-center gap-2 bg-brand-gold text-brand-dark font-semibold px-5 py-3 rounded-full">
+        <a href="https://wa.me/5511965754892" target="_blank" rel="noopener noreferrer" class="flex justify-center items-center gap-2 bg-brand-gold text-brand-dark font-semibold px-5 py-3 rounded-full">
           Fale Conosco
         </a>
       </li>
@@ -103,7 +104,7 @@
         <a href="#portfolio" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-gold hover:bg-brand-golddark text-brand-dark font-semibold px-8 py-3.5 rounded-full transition-colors">
           Ver Portfólio
         </a>
-        <a href="https://wa.me/5511900000000?text=Ol%C3%A1%2C%20quero%20agendar%20uma%20sess%C3%A3o!" target="_blank" rel="noopener noreferrer"
+        <a href="https://wa.me/5511965754892?text=Ol%C3%A1%2C%20quero%20agendar%20uma%20sess%C3%A3o!" target="_blank" rel="noopener noreferrer"
            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/60 hover:border-brand-gold hover:text-brand-gold text-white font-semibold px-8 py-3.5 rounded-full transition-colors">
           Agendar Sessão
         </a>
@@ -137,29 +138,6 @@
         <p class="text-brand-ink/80 mb-8 leading-relaxed">
           Do primeiro contato à entrega do álbum, cuidamos de cada detalhe com atenção e transparência, para que você viva o momento — e deixe o resto com a gente.
         </p>
-
-        <dl class="grid grid-cols-2 sm:grid-cols-4 gap-6" id="stats">
-          <div class="stat-item">
-            <dt class="sr-only">Anos de experiência</dt>
-            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="12">0</span>+</dd>
-            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Anos de experiência</p>
-          </div>
-          <div class="stat-item">
-            <dt class="sr-only">Casamentos realizados</dt>
-            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="480">0</span>+</dd>
-            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Casamentos realizados</p>
-          </div>
-          <div class="stat-item">
-            <dt class="sr-only">Clientes satisfeitos</dt>
-            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="1200">0</span>+</dd>
-            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Clientes satisfeitos</p>
-          </div>
-          <div class="stat-item">
-            <dt class="sr-only">Prêmios e reconhecimentos</dt>
-            <dd class="font-serif text-3xl md:text-4xl font-semibold text-brand-golddark"><span class="counter" data-target="15">0</span>+</dd>
-            <p class="text-xs md:text-sm text-brand-ink/60 mt-1">Prêmios recebidos</p>
-          </div>
-        </dl>
       </div>
     </div>
   </section>
@@ -249,6 +227,8 @@
         <button type="button" class="filter-btn" data-filter="video">Vídeo</button>
       </div>
 
+      <p id="gallery-status" class="text-center text-sm text-brand-ink/50 mb-6" role="status" aria-live="polite"></p>
+
       <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <!-- Gallery items injected via data below; static for no-JS fallback -->
       </div>
@@ -284,7 +264,7 @@
               <div class="testimonial-card">
                 <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
                 <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"A equipe da Adonai capturou cada detalhe do nosso casamento com uma sensibilidade incrível. Choramos de emoção assistindo ao filme!"</p>
-                <p class="font-semibold">Camila &amp; Rafael</p>
+                <p class="font-semibold">Juscilene &amp; Miro</p>
                 <p class="text-white/60 text-sm">Casamento — Dezembro 2025</p>
               </div>
             </div>
@@ -293,26 +273,8 @@
               <div class="testimonial-card">
                 <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
                 <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"Profissionalismo do início ao fim. As fotos do nosso pré-wedding ficaram maravilhosas e a entrega foi super rápida."</p>
-                <p class="font-semibold">Larissa &amp; Bruno</p>
+                <p class="font-semibold">Rafaela &amp; Matheus</p>
                 <p class="text-white/60 text-sm">Pré-Wedding — Outubro 2025</p>
-              </div>
-            </div>
-
-            <div class="w-full shrink-0 px-4">
-              <div class="testimonial-card">
-                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
-                <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"Contratamos para os 15 anos da nossa filha e foi a melhor decisão. Equipe discreta, atenciosa e resultado impecável."</p>
-                <p class="font-semibold">Família Andrade</p>
-                <p class="text-white/60 text-sm">Debutante — Setembro 2025</p>
-              </div>
-            </div>
-
-            <div class="w-full shrink-0 px-4">
-              <div class="testimonial-card">
-                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
-                <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"Indico de olhos fechados! Um cuidado enorme com cada momento e um álbum lindíssimo como recordação."</p>
-                <p class="font-semibold">Juliana Prado</p>
-                <p class="text-white/60 text-sm">Casamento — Agosto 2025</p>
               </div>
             </div>
 
@@ -350,7 +312,7 @@
               </span>
               <div>
                 <h3 class="font-semibold mb-1">Atendimento</h3>
-                <p class="text-brand-ink/70 text-sm">São Paulo — SP e região<br>Atendimento em todo o Brasil mediante agenda</p>
+                <p class="text-brand-ink/70 text-sm">São Bernardo do Campo — SP<br>Atendimento em todo o Brasil mediante agenda</p>
               </div>
             </div>
 
@@ -360,7 +322,7 @@
               </span>
               <div>
                 <h3 class="font-semibold mb-1">Telefone / WhatsApp</h3>
-                <a href="https://wa.me/5511900000000" target="_blank" rel="noopener noreferrer" class="text-brand-ink/70 text-sm hover:text-brand-goldtext">+55 (11) 90000-0000</a>
+                <a href="https://wa.me/5511965754892" target="_blank" rel="noopener noreferrer" class="text-brand-ink/70 text-sm hover:text-brand-goldtext">+55 (11) 96575-4892</a>
               </div>
             </div>
 
@@ -370,7 +332,7 @@
               </span>
               <div>
                 <h3 class="font-semibold mb-1">E-mail</h3>
-                <a href="mailto:contato@adonaifotocine.com.br" class="text-brand-ink/70 text-sm hover:text-brand-goldtext">contato@adonaifotocine.com.br</a>
+                <a href="mailto:adonaifotocine@gmail.com" class="text-brand-ink/70 text-sm hover:text-brand-goldtext">adonaifotocine@gmail.com</a>
               </div>
             </div>
 
@@ -385,13 +347,13 @@
             </div>
 
             <div class="flex items-center gap-3 pt-2 mt-auto">
-              <a href="https://instagram.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Adonai Fotocine" class="social-icon">
+              <a href="https://www.instagram.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Adonai Fotocine" class="social-icon">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
               </a>
               <a href="https://facebook.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Facebook da Adonai Fotocine" class="social-icon">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v7h3v-7h2.2l.3-3H14v-1.5a.5.5 0 0 1 .5-.5H15V8z"/></svg>
               </a>
-              <a href="https://wa.me/5511900000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da Adonai Fotocine" class="social-icon">
+              <a href="https://wa.me/5511965754892" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da Adonai Fotocine" class="social-icon">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20l1.1-5.4A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5"/></svg>
               </a>
             </div>
@@ -423,7 +385,7 @@
             <div class="grid sm:grid-cols-2 gap-5 mb-5">
               <div class="field">
                 <label for="telefone" class="field-label">Telefone / WhatsApp <span class="text-red-600">*</span></label>
-                <input type="tel" id="telefone" name="telefone" class="field-input" required autocomplete="tel" placeholder="(11) 90000-0000" aria-describedby="err-telefone">
+                <input type="tel" id="telefone" name="telefone" class="field-input" required autocomplete="tel" placeholder="(11) 96575-4892" aria-describedby="err-telefone">
                 <p id="err-telefone" class="field-error" role="alert"></p>
               </div>
               <div class="field">
@@ -505,12 +467,12 @@
     <div>
       <h3 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contato</h3>
       <ul class="space-y-2 text-sm">
-        <li><a href="tel:+5511900000000" class="hover:text-brand-gold">+55 (11) 90000-0000</a></li>
-        <li><a href="mailto:contato@adonaifotocine.com.br" class="hover:text-brand-gold">contato@adonaifotocine.com.br</a></li>
-        <li>São Paulo — SP</li>
+        <li><a href="tel:+5511965754892" class="hover:text-brand-gold">+55 (11) 96575-4892</a></li>
+        <li><a href="mailto:adonaifotocine@gmail.com" class="hover:text-brand-gold">adonaifotocine@gmail.com</a></li>
+        <li>São Bernardo do Campo — SP</li>
       </ul>
       <div class="flex gap-3 mt-4">
-        <a href="https://instagram.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon">
+        <a href="https://www.instagram.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
         </a>
         <a href="https://facebook.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-icon">
@@ -522,18 +484,21 @@
 
   <div class="max-w-7xl mx-auto border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
     <p>&copy; <span id="year"></span> Adonai Fotocine. Todos os direitos reservados.</p>
-    <p>CNPJ 00.000.000/0001-00</p>
+    <p>
+      <a href="admin/" class="hover:text-brand-gold">Área do fotógrafo</a>
+    </p>
   </div>
 </footer>
 
 <!-- Floating actions -->
-<a href="https://wa.me/5511900000000?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!" target="_blank" rel="noopener noreferrer" class="float-btn float-whatsapp" aria-label="Falar no WhatsApp">
+<a href="https://wa.me/5511965754892?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!" target="_blank" rel="noopener noreferrer" class="float-btn float-whatsapp" aria-label="Falar no WhatsApp">
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20l1.1-5.4A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5"/></svg>
 </a>
 <button type="button" id="back-to-top" class="float-btn float-top" aria-label="Voltar ao topo" hidden>
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
 
+<script src="assets/js/site-config.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

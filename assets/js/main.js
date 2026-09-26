@@ -3,15 +3,10 @@
 
   /* =====================================================
      CONFIGURAÇÃO
-     Substitua pelos dados reais do seu negócio / integração.
-     Para o formulário de contato funcionar de verdade, crie uma
-     conta gratuita em https://formspree.io, gere um endpoint
-     ("https://formspree.io/f/xxxxxxx") e cole abaixo.
+     Centralizada em assets/js/site-config.js (compartilhada com
+     o painel do fotógrafo em admin/). Edite os valores lá.
   ===================================================== */
-  const CONFIG = {
-    FORM_ENDPOINT: "https://formspree.io/f/SEU_FORM_ID",
-    WHATSAPP_NUMBER: "5511900000000"
-  };
+  const CONFIG = window.SITE_CONFIG;
 
   const isFormConfigured = !CONFIG.FORM_ENDPOINT.includes("SEU_FORM_ID");
 
@@ -92,38 +87,12 @@
   );
   document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
-  /* ===================== Contadores animados ===================== */
-  const counters = document.querySelectorAll(".counter");
-  const animateCounter = (el) => {
-    const target = parseInt(el.dataset.target, 10) || 0;
-    const duration = 1500;
-    const start = performance.now();
-
-    const step = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.floor(eased * target);
-      if (progress < 1) requestAnimationFrame(step);
-      else el.textContent = target;
-    };
-    requestAnimationFrame(step);
-  };
-
-  const countersObserver = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          obs.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-  counters.forEach((el) => countersObserver.observe(el));
-
   /* ===================== Portfólio: dados + render ===================== */
-  const galleryData = [
+
+  // Fallback estático (placeholders) — usado enquanto o Cloudinary não
+  // estiver configurado, ou se a busca das fotos reais falhar por
+  // qualquer motivo. O site nunca fica com a galeria vazia.
+  const fallbackGalleryData = [
     { id: 1, category: "casamento", seed: "adonai-wed-1", alt: "Noivos trocando alianças durante a cerimônia" },
     { id: 2, category: "casamento", seed: "adonai-wed-2", alt: "Noiva sorrindo ao ser preparada para a cerimônia" },
     { id: 3, category: "pre-wedding", seed: "adonai-pw-1", alt: "Casal em ensaio pré-wedding ao entardecer" },
@@ -145,14 +114,39 @@
     video: "Vídeo"
   };
 
+  function cloudinaryThumbUrl(publicId, format) {
+    return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_fill,w_700,h_700/${publicId}.${format}`;
+  }
+  function cloudinaryFullUrl(publicId, format) {
+    return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,w_1600/${publicId}.${format}`;
+  }
+
+  function fallbackThumbUrl(item) {
+    return `https://picsum.photos/seed/${item.seed}/700/700`;
+  }
+  function fallbackFullUrl(item) {
+    return `https://picsum.photos/seed/${item.seed}/1400/1400`;
+  }
+
+  let galleryData = fallbackGalleryData.map((item) => ({
+    ...item,
+    thumbUrl: fallbackThumbUrl(item),
+    fullUrl: fallbackFullUrl(item)
+  }));
+
   const gallery = document.getElementById("gallery");
+  const galleryStatus = document.getElementById("gallery-status");
+  const activeFilter = () =>
+    document.querySelector(".filter-btn.is-active")?.dataset.filter || "todos";
 
   function renderGallery() {
+    const currentFilter = activeFilter();
+
     gallery.innerHTML = galleryData
       .map(
         (item, index) => `
-      <button type="button" class="gallery-item" data-category="${item.category}" data-index="${index}" aria-label="Ampliar foto: ${item.alt}">
-        <img src="https://picsum.photos/seed/${item.seed}/700/700" alt="${item.alt}" loading="lazy" width="700" height="700">
+      <button type="button" class="gallery-item${currentFilter !== "todos" && item.category !== currentFilter ? " is-hidden" : ""}" data-category="${item.category}" data-index="${index}" aria-label="Ampliar foto: ${item.alt}">
+        <img src="${item.thumbUrl}" alt="${item.alt}" loading="lazy" width="700" height="700">
         <span class="gallery-overlay"><span>${categoryLabels[item.category]}</span></span>
       </button>`
       )
@@ -163,6 +157,48 @@
     });
   }
   renderGallery();
+
+  // Busca os eventos publicados pelo fotógrafo (via /admin/) no nosso
+  // próprio endpoint (api/gallery.js). As fotos em si continuam hospedadas
+  // no Cloudinary — aqui só lemos a lista de quais fotos existem, porque a
+  // listagem pública por tag do Cloudinary está bloqueada nesta conta.
+  async function loadPublishedGallery() {
+    try {
+      const response = await fetch("/api/gallery", { cache: "no-store" });
+      if (!response.ok) throw new Error("Falha ao buscar galeria");
+      const data = await response.json();
+      const events = data.events || [];
+
+      const items = [];
+      events.forEach((event) => {
+        (event.photos || []).forEach((photo) => {
+          items.push({
+            id: photo.publicId,
+            category: event.category,
+            alt: `${categoryLabels[event.category] || event.category} — ${event.eventName}`,
+            thumbUrl: cloudinaryThumbUrl(photo.publicId, photo.format),
+            fullUrl: cloudinaryFullUrl(photo.publicId, photo.format)
+          });
+        });
+      });
+
+      if (items.length > 0) {
+        galleryData = items;
+        renderGallery();
+        if (galleryStatus) galleryStatus.textContent = "";
+      } else if (galleryStatus) {
+        galleryStatus.textContent =
+          "Nenhuma foto publicada pelo fotógrafo ainda — mostrando fotos de exemplo.";
+      }
+    } catch (err) {
+      // Mantém o fallback estático em qualquer erro de rede/config.
+      if (galleryStatus) {
+        galleryStatus.textContent =
+          "Não foi possível carregar as fotos mais recentes agora — mostrando fotos de exemplo.";
+      }
+    }
+  }
+  loadPublishedGallery();
 
   /* ===================== Filtros do portfólio ===================== */
   const filterButtons = document.querySelectorAll(".filter-btn");
@@ -191,7 +227,7 @@
 
   function updateLightboxImage() {
     const item = galleryData[currentIndex];
-    lightboxImg.src = `https://picsum.photos/seed/${item.seed}/1400/1400`;
+    lightboxImg.src = item.fullUrl;
     lightboxImg.alt = item.alt;
     lightboxCaption.textContent = `${categoryLabels[item.category]} — ${item.alt}`;
   }
