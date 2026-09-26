@@ -156,9 +156,13 @@
     return fetch(`https://api.cloudinary.com/v1_1/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload`, {
       method: "POST",
       body
-    }).then((res) => {
-      if (!res.ok) throw new Error("Falha no envio (" + res.status + ")");
-      return res.json();
+    }).then(async (res) => {
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        const reason = data?.error?.message || `HTTP ${res.status}`;
+        throw new Error(reason);
+      }
+      return data;
     });
   }
 
@@ -214,7 +218,7 @@
         statusEl.textContent = `✓ enviada (${formatSize(compressedBlob.size)}, era ${formatSize(originalFile.size)})`;
         statusEl.classList.add("text-emerald-600");
       } catch (err) {
-        statusEl.textContent = "✗ erro";
+        statusEl.textContent = `✗ erro: ${err.message}`;
         statusEl.classList.add("text-red-600");
       }
 
