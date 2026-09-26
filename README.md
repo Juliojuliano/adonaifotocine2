@@ -1,6 +1,6 @@
 # Adonai Fotocine — Landing Page
 
-Landing page para estúdio de fotografia e filmagem de casamentos e eventos sociais. HTML/CSS/JS puro (sem framework de front-end), com Tailwind CSS compilado localmente (sem dependência de CDN em produção).
+Landing page para estúdio de fotografia e filmagem de casamentos e eventos sociais. HTML/CSS/JS puro no front-end (sem framework), com Tailwind CSS compilado localmente (sem dependência de CDN em produção). O único código de servidor é uma função serverless pequena (`api/gallery.js`) que guarda a lista de fotos publicadas — ver seção 4.
 
 ## Estrutura do projeto
 
@@ -9,7 +9,9 @@ Landing page para estúdio de fotografia e filmagem de casamentos e eventos soci
 ├── admin/
 │   ├── index.html          # Painel do fotógrafo (senha + upload de fotos)
 │   └── js/
-│       └── upload.js       # Portão de senha, compressão e envio ao Cloudinary
+│       └── upload.js       # Portão de senha, compressão, envio ao Cloudinary e publicação do evento
+├── api/
+│   └── gallery.js          # Função serverless (Vercel): guarda/lê a lista de eventos publicados
 ├── assets/
 │   ├── css/
 │   │   ├── tailwind.css    # CSS gerado pelo Tailwind (não editar à mão)
@@ -77,24 +79,30 @@ As imagens são geradas dinamicamente via [Lorem Picsum](https://picsum.photos) 
 
 ### 4. Painel do fotógrafo (upload de fotos dos eventos)
 
-O site tem um painel simples em `/admin/` para a Adonai postar as fotos de cada evento direto do navegador, sem editar código e sem precisar de um backend próprio. O upload vai direto para o [Cloudinary](https://cloudinary.com) (plano gratuito), e a galeria do site busca as fotos mais recentes automaticamente.
+O site tem um painel simples em `/admin/` para a Adonai postar as fotos de cada evento direto do navegador, sem editar código. As fotos em si vão para o [Cloudinary](https://cloudinary.com) (plano gratuito); a **lista** de quais fotos foram publicadas (evento, categoria, data) fica guardada num arquivo JSON no [Vercel Blob](https://vercel.com/docs/storage/vercel-blob), lido/escrito pela função serverless `api/gallery.js`.
+
+> **Por que não usar só o Cloudinary?** A Cloudinary bloqueia por padrão a listagem pública de fotos por tag em contas novas (erro `Resources of type list are restricted`), e essa restrição não é sempre reversível pelo painel de Security da conta. Por isso a lista de fotos publicadas vive num JSON próprio, e as fotos continuam hospedadas e servidas direto pelo Cloudinary (isso não muda).
 
 **Antes de enviar, cada foto é redimensionada e comprimida no próprio navegador** (limite configurável em `UPLOAD_MAX_DIMENSION_PX`/`UPLOAD_JPEG_QUALITY`, padrão 2000px no lado maior e qualidade JPEG 82%), para não subir arquivos pesados nem estourar a cota gratuita.
 
-Passo a passo:
+Passo a passo (Cloudinary):
 
 1. Crie uma conta gratuita em [cloudinary.com](https://cloudinary.com).
 2. No Dashboard, copie o **Cloud name**.
 3. Vá em **Settings → Upload → Upload presets → Add upload preset**, marque o modo como **Unsigned** e salve. Copie o nome do preset.
-4. Em **Settings → Security → Restricted image types**, garanta que a listagem por tag (`List` resource type) esteja habilitada — é o que permite a galeria pública buscar as fotos sem chave secreta.
-5. Edite `assets/js/site-config.js` e preencha `CLOUDINARY_CLOUD_NAME` e `CLOUDINARY_UPLOAD_PRESET`.
-6. Defina a senha do painel: gere o hash SHA-256 da senha escolhida (instruções em comentário no próprio arquivo) e cole em `ADMIN_PASSWORD_SHA256`.
-7. Acesse `/admin/` (ou o link "Área do fotógrafo" no rodapé do site), informe a senha, preencha nome/data/categoria do evento e selecione as fotos.
+4. Edite `assets/js/site-config.js` e preencha `CLOUDINARY_CLOUD_NAME` e `CLOUDINARY_UPLOAD_PRESET`.
+5. Defina a senha do painel: gere o hash SHA-256 da senha escolhida (instruções em comentário no próprio arquivo) e cole em `ADMIN_PASSWORD_SHA256`.
+
+Passo a passo (Vercel — necessário para o `api/gallery.js` funcionar):
+
+6. No projeto do Vercel, crie um **Blob store** (Storage → Create Database → Blob) — isso já injeta a variável `BLOB_READ_WRITE_TOKEN` automaticamente no projeto.
+7. Em **Settings → Environment Variables**, adicione `ADMIN_PASSWORD_SHA256` com o **mesmo hash** usado no passo 5 (o servidor usa essa cópia para validar quem pode publicar; nunca deixe a senha em texto puro).
+8. Faça o deploy. Acesse `/admin/` (ou o link "Área do fotógrafo" no rodapé do site), informe a senha, preencha nome/data/categoria do evento e selecione as fotos.
 
 **Limitações importantes:**
-- A senha do painel é só uma senha combinada (guardada como hash no JS do site), não é autenticação de verdade — qualquer pessoa com a senha e o link consegue postar fotos. Não use para dados sensíveis de clientes.
-- O upload é "unsigned": qualquer pessoa que descubra o cloud name + upload preset também consegue subir arquivos para a conta Cloudinary. Para reduzir o risco, no preset do Cloudinary limite formatos aceitos (`image`), tamanho máximo e, se quiser, restrinja por pasta.
-- Sem o Cloudinary configurado, o painel mostra um aviso e a galeria do site continua funcionando com as fotos de exemplo (fallback).
+- A senha do painel é só uma senha combinada (hash comparado tanto no navegador quanto no servidor), não é autenticação de verdade — qualquer pessoa com a senha e o link consegue postar fotos. Não use para dados sensíveis de clientes.
+- O upload pro Cloudinary é "unsigned": qualquer pessoa que descubra o cloud name + upload preset também consegue subir arquivos para a conta Cloudinary. Para reduzir o risco, no preset do Cloudinary limite formatos aceitos (`image`), tamanho máximo e, se quiser, restrinja por pasta.
+- Sem o Cloudinary configurado, o painel mostra um aviso e a galeria do site continua funcionando com as fotos de exemplo (fallback). Sem o `api/gallery.js` implantado (por exemplo, se o site for publicado em um host sem funções serverless, como GitHub Pages), a galeria também cai no fallback — ver seção "Deploy".
 
 ### 5. SEO
 
@@ -115,8 +123,6 @@ Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Gra
 
 ## Deploy
 
-Por ser um site estático, pode ser publicado em qualquer um destes serviços (basta rodar `npm run build:css` antes e subir a pasta inteira, exceto `node_modules/`):
+O front-end é estático, mas o painel do fotógrafo depende da função serverless em `api/gallery.js` e de um Vercel Blob store — por isso o deploy recomendado é a **[Vercel](https://vercel.com)**, que suporta as duas coisas nativamente sem configuração extra (basta rodar `npm run build:css` antes, se for subir os arquivos manualmente).
 
-- [Vercel](https://vercel.com)
-- [Netlify](https://netlify.com)
-- GitHub Pages
+Publicar em um host puramente estático (Netlify sem functions, GitHub Pages) ainda funciona para o site em si, mas o painel de upload não vai conseguir publicar fotos na galeria (a chamada a `/api/gallery` falha e o site cai no fallback estático).

@@ -15,14 +15,16 @@ entregue código de nível de produção — limpo, legível, seguro e sem bugs.
 - **Padrão profissional**: responsividade mobile-first, acessibilidade
   (WCAG — labels, `aria-*`, navegação por teclado, `prefers-reduced-motion`),
   paleta e tipografia consistentes com a marca (`tailwind.config.js`).
-- **Simplicidade acima de tudo**: este é um site estático (HTML/CSS/JS
-  puro + Tailwind compilado, sem framework, sem backend próprio). Prefira
-  sempre a solução mais simples que resolva o problema real — evite
-  introduzir frameworks, backends ou serviços novos sem necessidade
-  comprovada. O histórico deste projeto já teve duas tentativas mais
-  complexas de painel de fotos revertidas; a versão atual (Cloudinary com
-  upload unsigned + compressão no navegador) foi escolhida por ser a mais
-  simples que ainda funciona de ponta a ponta sem exigir backend.
+- **Simplicidade acima de tudo**: o front-end é estático (HTML/CSS/JS
+  puro + Tailwind compilado, sem framework). O único código de servidor é
+  a função serverless `api/gallery.js` (Vercel) — ver "Painel do
+  fotógrafo" abaixo para o motivo dela existir. Prefira sempre a solução
+  mais simples que resolva o problema real — evite introduzir frameworks
+  ou serviços novos sem necessidade comprovada. O histórico deste projeto
+  já teve duas tentativas mais complexas de painel de fotos revertidas; a
+  versão atual (Cloudinary com upload unsigned + compressão no navegador)
+  foi escolhida por ser a mais simples que ainda funciona de ponta a
+  ponta.
 
 ## Módulo especial: painel do fotógrafo
 
@@ -44,6 +46,15 @@ O painel em `/admin/` segue duas regras de autonomia e privacidade:
    `UPLOAD_MAX_DIMENSION_PX` / `UPLOAD_JPEG_QUALITY` em
    `assets/js/site-config.js`), para não pesar no Cloudinary nem no
    carregamento do site.
+4. **Por que existe `api/gallery.js`**: a Cloudinary bloqueia a listagem
+   pública de fotos por tag nesta conta (`Resources of type list are
+   restricted`), e essa restrição não é sempre reversível pelas
+   configurações de Security da conta (foi testado e confirmado neste
+   projeto em 2026-09). Por isso a lista de eventos/fotos publicadas fica
+   num JSON no Vercel Blob, lido/escrito por essa função — as fotos em si
+   continuam hospedadas e servidas direto pelo Cloudinary. Antes de
+   remover essa peça achando que é complexidade desnecessária, releia
+   este motivo.
 
 ## Antes de propor uma reescrita de arquitetura
 

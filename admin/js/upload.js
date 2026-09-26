@@ -166,6 +166,26 @@
     });
   }
 
+  // A Cloudinary bloqueia a listagem pública de fotos por tag nesta conta,
+  // então depois que as fotos já foram enviadas com sucesso, registramos o
+  // evento no nosso próprio endpoint (api/gallery.js) — é isso que faz a
+  // foto aparecer no site, sem precisar editar código.
+  function publishEvent(eventName, eventDate, category, photos) {
+    return fetch("/api/gallery", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Admin-Password": CONFIG.ADMIN_PASSWORD_SHA256
+      },
+      body: JSON.stringify({ eventName, eventDate, category, photos })
+    }).then(async (res) => {
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || `HTTP ${res.status}`);
+      }
+    });
+  }
+
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -200,6 +220,7 @@
 
     let done = 0;
     let ok = 0;
+    const uploadedPhotos = [];
 
     for (let i = 0; i < files.length; i++) {
       const row = document.getElementById(`upload-row-${i}`);
@@ -212,7 +233,8 @@
         const compressedName = originalFile.name.replace(/\.[^.]+$/, "") + ".jpg";
 
         statusEl.textContent = "enviando...";
-        await uploadOne(compressedBlob, compressedName, tags);
+        const result = await uploadOne(compressedBlob, compressedName, tags);
+        uploadedPhotos.push({ publicId: result.public_id, format: result.format });
 
         ok++;
         statusEl.textContent = `✓ enviada (${formatSize(compressedBlob.size)}, era ${formatSize(originalFile.size)})`;
@@ -226,9 +248,17 @@
       uploadSummary.textContent = `Enviando ${done} de ${files.length} foto(s) — ${categoryLabels[category]}: ${eventName}`;
     }
 
-    uploadSummary.textContent = `Concluído: ${ok} de ${files.length} foto(s) enviadas — ${categoryLabels[category]}: ${eventName}`;
-    if (ok > 0) {
-      uploadDoneLink.classList.remove("hidden");
+    if (uploadedPhotos.length > 0) {
+      try {
+        uploadSummary.textContent = `Publicando evento no site...`;
+        await publishEvent(eventName, eventDate, category, uploadedPhotos);
+        uploadSummary.textContent = `Concluído: ${ok} de ${files.length} foto(s) enviadas e publicadas — ${categoryLabels[category]}: ${eventName}`;
+        uploadDoneLink.classList.remove("hidden");
+      } catch (err) {
+        uploadSummary.textContent = `Fotos enviadas ao Cloudinary, mas houve um erro ao publicar no site: ${err.message}`;
+      }
+    } else {
+      uploadSummary.textContent = `Concluído: 0 de ${files.length} foto(s) enviadas — ${categoryLabels[category]}: ${eventName}`;
     }
 
     uploadSubmit.disabled = false;

@@ -9,7 +9,6 @@
   const CONFIG = window.SITE_CONFIG;
 
   const isFormConfigured = !CONFIG.FORM_ENDPOINT.includes("SEU_FORM_ID");
-  const isCloudinaryConfigured = !CONFIG.CLOUDINARY_CLOUD_NAME.includes("SEU_CLOUD_NAME");
 
   /* ===================== Ano no rodapé ===================== */
   const yearEl = document.getElementById("year");
@@ -145,12 +144,6 @@
     video: "Vídeo"
   };
 
-  // Toda foto enviada pelo fotógrafo no painel (/admin/) recebe, além da
-  // tag da categoria, esta tag em comum — é o que garante que só fotos
-  // da Adonai Fotocine apareçam aqui, mesmo que o cloud name do
-  // Cloudinary seja reaproveitado para outra coisa no futuro.
-  const CLOUDINARY_GALLERY_TAG = "adonai-gallery";
-
   function cloudinaryThumbUrl(publicId, format) {
     return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_fill,w_700,h_700/${publicId}.${format}`;
   }
@@ -195,45 +188,29 @@
   }
   renderGallery();
 
-  // Busca as fotos reais enviadas pelo fotógrafo (via /admin/) direto do
-  // Cloudinary, sem precisar de backend: cada categoria tem sua própria
-  // tag, e o Cloudinary expõe uma listagem pública por tag (precisa
-  // estar habilitada nas configurações da conta — ver README).
-  async function loadCloudinaryGallery() {
-    if (!isCloudinaryConfigured) return;
-
-    const categories = Object.keys(categoryLabels);
+  // Busca os eventos publicados pelo fotógrafo (via /admin/) no nosso
+  // próprio endpoint (api/gallery.js). As fotos em si continuam hospedadas
+  // no Cloudinary — aqui só lemos a lista de quais fotos existem, porque a
+  // listagem pública por tag do Cloudinary está bloqueada nesta conta.
+  async function loadPublishedGallery() {
     try {
-      const responses = await Promise.all(
-        categories.map((category) =>
-          fetch(
-            `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/list/${encodeURIComponent(
-              category
-            )}.json`
-          )
-            .then((res) => (res.ok ? res.json() : { resources: [] }))
-            .then((data) => ({ category, resources: data.resources || [] }))
-            .catch(() => ({ category, resources: [] }))
-        )
-      );
+      const response = await fetch("/api/gallery", { cache: "no-store" });
+      if (!response.ok) throw new Error("Falha ao buscar galeria");
+      const data = await response.json();
+      const events = data.events || [];
 
       const items = [];
-      responses.forEach(({ category, resources }) => {
-        resources.forEach((res) => {
+      events.forEach((event) => {
+        (event.photos || []).forEach((photo) => {
           items.push({
-            id: res.public_id,
-            category,
-            format: res.format,
-            version: res.version,
-            alt: `Foto de ${categoryLabels[category].toLowerCase()} — Adonai Fotocine`,
-            thumbUrl: cloudinaryThumbUrl(res.public_id, res.format),
-            fullUrl: cloudinaryFullUrl(res.public_id, res.format)
+            id: photo.publicId,
+            category: event.category,
+            alt: `${categoryLabels[event.category] || event.category} — ${event.eventName}`,
+            thumbUrl: cloudinaryThumbUrl(photo.publicId, photo.format),
+            fullUrl: cloudinaryFullUrl(photo.publicId, photo.format)
           });
         });
       });
-
-      // Mais recentes primeiro.
-      items.sort((a, b) => b.version - a.version);
 
       if (items.length > 0) {
         galleryData = items;
@@ -251,7 +228,7 @@
       }
     }
   }
-  loadCloudinaryGallery();
+  loadPublishedGallery();
 
   /* ===================== Filtros do portfólio ===================== */
   const filterButtons = document.querySelectorAll(".filter-btn");

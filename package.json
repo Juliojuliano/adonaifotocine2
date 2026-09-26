@@ -19,6 +19,9 @@
     "url": "https://github.com/Juliojuliano/adonaifotocine2/issues"
   },
   "homepage": "https://github.com/Juliojuliano/adonaifotocine2#readme",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  },
   "devDependencies": {
     "tailwindcss": "^3.4.19"
   }
