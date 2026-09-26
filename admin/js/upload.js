@@ -26,6 +26,9 @@
   const uploadList = document.getElementById("upload-list");
   const uploadDoneLink = document.getElementById("upload-done-link");
   const compressionNote = document.getElementById("compression-note");
+  const refreshPublishedBtn = document.getElementById("refresh-published-btn");
+  const publishedStatus = document.getElementById("published-status");
+  const publishedEvents = document.getElementById("published-events");
 
   if (!isCloudinaryConfigured) {
     configWarning.classList.remove("hidden");
@@ -47,6 +50,7 @@
   function showPanel() {
     gate.classList.add("hidden");
     panel.classList.remove("hidden");
+    loadPublishedGalleryAdmin();
   }
 
   function showGate() {
@@ -186,6 +190,119 @@
     });
   }
 
+  /* ===================== Fotos publicadas (excluir) ===================== */
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function cloudinaryThumbUrl(publicId, format) {
+    return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_fill,w_200,h_200/${publicId}.${format}`;
+  }
+
+  function formatDateBR(isoDate) {
+    const [y, m, d] = String(isoDate || "").split("-");
+    if (!y || !m || !d) return isoDate || "";
+    return `${d}/${m}/${y}`;
+  }
+
+  function renderPublishedEvents(events) {
+    publishedEvents.innerHTML = events
+      .map(
+        (event) => `
+      <div class="bg-white rounded-2xl border border-black/5 shadow-sm p-5" data-event-id="${escapeHtml(event.id)}">
+        <p class="font-medium">${escapeHtml(event.eventName)}</p>
+        <p class="text-xs text-brand-ink/50 mb-3">${escapeHtml(categoryLabels[event.category] || event.category)} · ${escapeHtml(formatDateBR(event.eventDate))}</p>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+          ${(event.photos || [])
+            .map(
+              (photo) => `
+            <div class="relative aspect-square rounded-lg overflow-hidden bg-brand-cream">
+              <img src="${cloudinaryThumbUrl(photo.publicId, photo.format)}" alt="" loading="lazy" class="w-full h-full object-cover">
+              <button
+                type="button"
+                class="delete-photo-btn absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-red-600 transition"
+                data-event-id="${escapeHtml(event.id)}"
+                data-public-id="${escapeHtml(photo.publicId)}"
+                aria-label="Excluir esta foto"
+                title="Excluir esta foto"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+              </button>
+            </div>`
+            )
+            .join("")}
+        </div>
+      </div>`
+      )
+      .join("");
+  }
+
+  async function loadPublishedGalleryAdmin() {
+    publishedStatus.textContent = "Carregando fotos publicadas...";
+    publishedEvents.innerHTML = "";
+    try {
+      const res = await fetch("/api/gallery", { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const events = data.events || [];
+      if (events.length === 0) {
+        publishedStatus.textContent = "Nenhuma foto publicada ainda.";
+        return;
+      }
+      publishedStatus.textContent = "";
+      renderPublishedEvents(events);
+    } catch (err) {
+      publishedStatus.textContent = "Não foi possível carregar as fotos publicadas agora.";
+    }
+  }
+
+  function deletePhoto(eventId, publicId) {
+    return fetch("/api/gallery", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Admin-Password": CONFIG.ADMIN_PASSWORD_SHA256
+      },
+      body: JSON.stringify({ eventId, publicId })
+    }).then(async (res) => {
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || `HTTP ${res.status}`);
+      }
+    });
+  }
+
+  refreshPublishedBtn.addEventListener("click", loadPublishedGalleryAdmin);
+
+  publishedEvents.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".delete-photo-btn");
+    if (!btn) return;
+
+    if (!confirm("Excluir esta foto da galeria do site? Essa ação não pode ser desfeita.")) {
+      return;
+    }
+
+    btn.disabled = true;
+    btn.classList.add("opacity-50");
+
+    try {
+      await deletePhoto(btn.dataset.eventId, btn.dataset.publicId);
+      await loadPublishedGalleryAdmin();
+    } catch (err) {
+      alert(`Erro ao excluir a foto: ${err.message}`);
+      btn.disabled = false;
+      btn.classList.remove("opacity-50");
+    }
+  });
+
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -254,6 +371,7 @@
         await publishEvent(eventName, eventDate, category, uploadedPhotos);
         uploadSummary.textContent = `Concluído: ${ok} de ${files.length} foto(s) enviadas e publicadas — ${categoryLabels[category]}: ${eventName}`;
         uploadDoneLink.classList.remove("hidden");
+        loadPublishedGalleryAdmin();
       } catch (err) {
         uploadSummary.textContent = `Fotos enviadas ao Cloudinary, mas houve um erro ao publicar no site: ${err.message}`;
       }

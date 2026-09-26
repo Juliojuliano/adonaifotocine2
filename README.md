@@ -99,10 +99,13 @@ Passo a passo (Vercel — necessário para o `api/gallery.js` funcionar):
 7. Em **Settings → Environment Variables**, adicione `ADMIN_PASSWORD_SHA256` com o **mesmo hash** usado no passo 5 (o servidor usa essa cópia para validar quem pode publicar; nunca deixe a senha em texto puro).
 8. Faça o deploy. Acesse `/admin/` (ou o link "Área do fotógrafo" no rodapé do site), informe a senha, preencha nome/data/categoria do evento e selecione as fotos.
 
+O painel também lista as fotos já publicadas (seção "Fotos publicadas"), cada uma com um pequeno ícone de lixeira para remover a foto da galeria do site.
+
 **Limitações importantes:**
 - A senha do painel é só uma senha combinada (hash comparado tanto no navegador quanto no servidor), não é autenticação de verdade — qualquer pessoa com a senha e o link consegue postar fotos. Não use para dados sensíveis de clientes.
 - O upload pro Cloudinary é "unsigned": qualquer pessoa que descubra o cloud name + upload preset também consegue subir arquivos para a conta Cloudinary. Para reduzir o risco, no preset do Cloudinary limite formatos aceitos (`image`), tamanho máximo e, se quiser, restrinja por pasta.
 - Sem o Cloudinary configurado, o painel mostra um aviso e a galeria do site continua funcionando com as fotos de exemplo (fallback). Sem o `api/gallery.js` implantado (por exemplo, se o site for publicado em um host sem funções serverless, como GitHub Pages), a galeria também cai no fallback — ver seção "Deploy".
+- Excluir uma foto pelo painel remove só a entrada dela na lista pública (o site para de mostrá-la); o arquivo continua guardado no Cloudinary. Apagar de verdade do Cloudinary exige uma chamada assinada com a API secret, que propositalmente não é exposta no navegador — se quiser liberar espaço de vez, remova o arquivo direto pelo painel do Cloudinary.
 
 ### 5. SEO
 

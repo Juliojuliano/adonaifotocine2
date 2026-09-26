@@ -23,7 +23,7 @@ async function readManifest() {
 
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Admin-Password");
 
   if (req.method === "OPTIONS") {
@@ -69,6 +69,51 @@ module.exports = async function handler(req, res) {
       })),
       createdAt: new Date().toISOString()
     });
+
+    await put(MANIFEST_PATHNAME, JSON.stringify(manifest), {
+      access: "public",
+      contentType: "application/json",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      token: process.env.BLOB_READ_WRITE_TOKEN
+    });
+
+    res.status(200).json({ ok: true, totalEvents: manifest.events.length });
+    return;
+  }
+
+  if (req.method === "DELETE") {
+    const providedHash = req.headers["x-admin-password"];
+    if (!providedHash || providedHash !== process.env.ADMIN_PASSWORD_SHA256) {
+      res.status(401).json({ error: "Senha inválida." });
+      return;
+    }
+
+    const { eventId, publicId } = req.body || {};
+    if (!eventId || !publicId) {
+      res.status(400).json({ error: "Dados incompletos para excluir a foto." });
+      return;
+    }
+
+    const manifest = await readManifest();
+    manifest.events = manifest.events || [];
+    const event = manifest.events.find((e) => e.id === String(eventId));
+    if (!event) {
+      res.status(404).json({ error: "Evento não encontrado." });
+      return;
+    }
+
+    const beforeCount = event.photos.length;
+    event.photos = event.photos.filter((p) => p.publicId !== publicId);
+    if (event.photos.length === beforeCount) {
+      res.status(404).json({ error: "Foto não encontrada neste evento." });
+      return;
+    }
+
+    // Evento sem fotos não faz mais sentido aparecer na lista.
+    if (event.photos.length === 0) {
+      manifest.events = manifest.events.filter((e) => e.id !== event.id);
+    }
 
     await put(MANIFEST_PATHNAME, JSON.stringify(manifest), {
       access: "public",
