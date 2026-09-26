@@ -18,7 +18,7 @@ Landing page para estúdio de fotografia e filmagem de casamentos e eventos soci
 │   │   └── styles.css      # Estilos customizados (lightbox, carrossel, animações)
 │   ├── js/
 │   │   ├── site-config.js  # Configuração compartilhada (site + painel)
-│   │   └── main.js         # Toda a interatividade (menu, filtros, formulário, galeria, etc.)
+│   │   └── main.js         # Toda a interatividade (menu, filtros, galeria, etc.)
 │   └── favicon.svg
 ├── src/
 │   └── input.css           # Fonte do Tailwind (@tailwind base/components/utilities)
@@ -42,25 +42,7 @@ Durante o desenvolvimento, use `npm run watch:css` para recompilar o Tailwind au
 
 ## Configuração obrigatória antes de publicar
 
-### 1. Formulário de contato
-
-O formulário (seção "Contato") envia os dados via `fetch` para um endpoint externo. Por padrão ele está **sem configuração real** e mostra uma mensagem instruindo o visitante a usar o WhatsApp.
-
-Para ativar o envio de e-mails de verdade:
-
-1. Crie uma conta gratuita em [Formspree](https://formspree.io) (ou serviço equivalente).
-2. Crie um formulário e copie o endpoint gerado (algo como `https://formspree.io/f/xxxxxxxx`).
-3. Edite `assets/js/site-config.js` e substitua o valor de `FORM_ENDPOINT`.
-
-```js
-window.SITE_CONFIG = {
-  FORM_ENDPOINT: "https://formspree.io/f/xxxxxxxx", // <- cole aqui
-  WHATSAPP_NUMBER: "5511900000000",
-  // ...
-};
-```
-
-### 2. Dados de contato reais
+### 1. Dados de contato reais
 
 Substitua os dados de exemplo (placeholders) pelos dados reais do negócio:
 
@@ -70,14 +52,14 @@ Substitua os dados de exemplo (placeholders) pelos dados reais do negócio:
 - Endereço/região de atendimento e horário de funcionamento (seção "Contato").
 - CNPJ no rodapé (ou remova a linha, se não aplicável).
 
-### 3. Imagens
+### 2. Imagens
 
 As imagens são geradas dinamicamente via [Lorem Picsum](https://picsum.photos) (`https://picsum.photos/seed/...`) como placeholders reais e estáveis. Substitua pelas fotos reais do portfólio:
 
 - Hero, foto "Sobre" e imagem do Open Graph: busque por `picsum.photos` em `index.html`.
-- Galeria do portfólio: assim que o painel do fotógrafo (seção 4 abaixo) estiver configurado, as fotos reais substituem automaticamente os placeholders. Enquanto isso não acontece (ou se preferir manter uma amostra fixa), edite o array `fallbackGalleryData` no início de `assets/js/main.js` — cada item tem `seed` (usado para montar a URL), `category` (`casamento`, `pre-wedding`, `making-of`, `video`) e `alt` (texto alternativo para acessibilidade).
+- Galeria do portfólio: assim que o painel do fotógrafo (seção 3 abaixo) estiver configurado, as fotos reais substituem automaticamente os placeholders. Enquanto isso não acontece (ou se preferir manter uma amostra fixa), edite o array `fallbackGalleryData` no início de `assets/js/main.js` — cada item tem `seed` (usado para montar a URL), `category` (`casamento`, `pre-wedding`, `making-of`, `video`) e `alt` (texto alternativo para acessibilidade).
 
-### 4. Painel do fotógrafo (upload de fotos dos eventos)
+### 3. Painel do fotógrafo (upload de fotos dos eventos)
 
 O site tem um painel simples em `/admin/` para a Adonai postar as fotos de cada evento direto do navegador, sem editar código. As fotos em si vão para o [Cloudinary](https://cloudinary.com) (plano gratuito); a **lista** de quais fotos foram publicadas (evento, categoria, data) fica guardada num arquivo JSON no [Vercel Blob](https://vercel.com/docs/storage/vercel-blob), lido/escrito pela função serverless `api/gallery.js`.
 
@@ -119,7 +101,6 @@ Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Gra
 - Portfólio com filtros por categoria e lightbox com navegação por teclado (Esc / setas).
 - Painel do fotógrafo (`/admin/`) para postar fotos dos eventos direto do navegador, com compressão automática antes do envio.
 - Carrossel de depoimentos com autoplay, setas, dots e suporte a swipe no touch.
-- Formulário de contato com validação client-side, proteção anti-spam (honeypot) e os 4 estados visuais (ocioso, carregando, sucesso, erro).
 - Botão flutuante de WhatsApp e "voltar ao topo".
 - Acessível: navegação por teclado, `aria-label`/`aria-live`, skip link, contraste conforme WCAG AA, `prefers-reduced-motion` respeitado.
 - Responsivo de 320px até telas 4K.

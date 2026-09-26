@@ -6,9 +6,6 @@
    README.md.
 ===================================================== */
 window.SITE_CONFIG = {
-  // Formulário de contato — https://formspree.io
-  FORM_ENDPOINT: "https://formspree.io/f/SEU_FORM_ID",
-
   // WhatsApp (DDI + DDD + número, só dígitos)
   WHATSAPP_NUMBER: "5511965754892",
 
