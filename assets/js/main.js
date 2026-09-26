@@ -87,36 +87,6 @@
   );
   document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
-  /* ===================== Contadores animados ===================== */
-  const counters = document.querySelectorAll(".counter");
-  const animateCounter = (el) => {
-    const target = parseInt(el.dataset.target, 10) || 0;
-    const duration = 1500;
-    const start = performance.now();
-
-    const step = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.floor(eased * target);
-      if (progress < 1) requestAnimationFrame(step);
-      else el.textContent = target;
-    };
-    requestAnimationFrame(step);
-  };
-
-  const countersObserver = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          obs.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-  counters.forEach((el) => countersObserver.observe(el));
-
   /* ===================== Portfólio: dados + render ===================== */
 
   // Fallback estático (placeholders) — usado enquanto o Cloudinary não
