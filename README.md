@@ -1,6 +1,6 @@
 # Adonai Fotocine — Landing Page
 
-Landing page para estúdio de fotografia e filmagem de casamentos e eventos sociais. HTML/CSS/JS puro no front-end (sem framework), com Tailwind CSS compilado localmente (sem dependência de CDN em produção). O único código de servidor é uma função serverless pequena (`api/gallery.js`) que guarda a lista de fotos publicadas — ver seção 4.
+Landing page para estúdio de fotografia e filmagem de casamentos e eventos sociais. HTML/CSS/JS puro no front-end (sem framework), com Tailwind CSS compilado localmente (sem dependência de CDN em produção). O único código de servidor é uma função serverless pequena (`api/gallery.js`) que guarda a lista de fotos publicadas — ver seção 3.
 
 ## Estrutura do projeto
 
@@ -89,7 +89,7 @@ O painel também lista as fotos já publicadas (seção "Fotos publicadas"), cad
 - Sem o Cloudinary configurado, o painel mostra um aviso e a galeria do site continua funcionando com as fotos de exemplo (fallback). Sem o `api/gallery.js` implantado (por exemplo, se o site for publicado em um host sem funções serverless, como GitHub Pages), a galeria também cai no fallback — ver seção "Deploy".
 - Excluir uma foto pelo painel remove só a entrada dela na lista pública (o site para de mostrá-la); o arquivo continua guardado no Cloudinary. Apagar de verdade do Cloudinary exige uma chamada assinada com a API secret, que propositalmente não é exposta no navegador — se quiser liberar espaço de vez, remova o arquivo direto pelo painel do Cloudinary.
 
-### 5. SEO
+### 4. SEO
 
 Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Graph e adicione um `<link rel="canonical">` com o domínio final do site.
 
