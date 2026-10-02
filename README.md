@@ -115,4 +115,4 @@ O front-end é estático, mas o painel do fotógrafo depende da função serverl
 
 Publicar em um host puramente estático (Netlify sem functions, GitHub Pages) ainda funciona para o site em si, mas o painel de upload não vai conseguir publicar fotos na galeria (a chamada a `/api/gallery` falha e o site cai no fallback estático).
 
-O deploy é automático: a cada push na **Production Branch** configurada na Vercel (*Settings → Git*), um novo deploy de produção é gerado.
+O deploy é automático: a cada push na **Production Branch** (`main`) do repositório conectado na Vercel (*Settings → Git*), um novo deploy de produção é gerado.
