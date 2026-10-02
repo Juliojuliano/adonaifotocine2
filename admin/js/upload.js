@@ -148,7 +148,7 @@
     casamento: "Casamento",
     "pre-wedding": "Pré-Wedding",
     "making-of": "Making Of",
-    video: "Vídeo"
+    video: "Making Of" // categoria antiga, unida a "Making Of"
   };
 
   function uploadOne(blob, filename, tags) {

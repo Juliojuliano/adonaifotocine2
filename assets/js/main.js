@@ -96,11 +96,11 @@
     { id: 3, category: "pre-wedding", seed: "adonai-pw-1", alt: "Casal em ensaio pré-wedding ao entardecer" },
     { id: 4, category: "making-of", seed: "adonai-mk-1", alt: "Making of da noiva colocando o vestido" },
     { id: 5, category: "casamento", seed: "adonai-wed-3", alt: "Festa de casamento com pista de dança iluminada" },
-    { id: 6, category: "video", seed: "adonai-vid-1", alt: "Still de filmagem cinematográfica do casamento" },
+    { id: 6, category: "making-of", seed: "adonai-vid-1", alt: "Still de filmagem cinematográfica do casamento" },
     { id: 7, category: "pre-wedding", seed: "adonai-pw-2", alt: "Casal caminhando em ensaio ao ar livre" },
     { id: 8, category: "making-of", seed: "adonai-mk-2", alt: "Making of dos detalhes da decoração" },
     { id: 9, category: "casamento", seed: "adonai-wed-4", alt: "Buquê de flores da noiva em close" },
-    { id: 10, category: "video", seed: "adonai-vid-2", alt: "Still de filmagem com drone da recepção" },
+    { id: 10, category: "making-of", seed: "adonai-vid-2", alt: "Still de filmagem com drone da recepção" },
     { id: 11, category: "casamento", seed: "adonai-wed-5", alt: "Beijo do casal logo após a cerimônia" },
     { id: 12, category: "pre-wedding", seed: "adonai-pw-3", alt: "Ensaio de noivado em estúdio" }
   ];
@@ -108,9 +108,14 @@
   const categoryLabels = {
     casamento: "Casamento",
     "pre-wedding": "Pré-Wedding",
-    "making-of": "Making Of",
-    video: "Vídeo"
+    "making-of": "Making Of"
   };
+
+  // A categoria "video" foi unida a "Making Of". Eventos já publicados pelo
+  // painel com a categoria antiga continuam aparecendo, agora em "Making Of".
+  function normalizeCategory(category) {
+    return category === "video" ? "making-of" : category;
+  }
 
   function cloudinaryThumbUrl(publicId, format) {
     return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_fill,w_700,h_700/${publicId}.${format}`;
@@ -169,11 +174,12 @@
 
       const items = [];
       events.forEach((event) => {
+        const category = normalizeCategory(event.category);
         (event.photos || []).forEach((photo) => {
           items.push({
             id: photo.publicId,
-            category: event.category,
-            alt: `${categoryLabels[event.category] || event.category} — ${event.eventName}`,
+            category,
+            alt: `${categoryLabels[category] || category} — ${event.eventName}`,
             thumbUrl: cloudinaryThumbUrl(photo.publicId, photo.format),
             fullUrl: cloudinaryFullUrl(photo.publicId, photo.format)
           });
