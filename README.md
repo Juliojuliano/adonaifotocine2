@@ -114,3 +114,5 @@ Em `index.html`, revise `<title>`, `<meta name="description">`, as tags Open Gra
 O front-end é estático, mas o painel do fotógrafo depende da função serverless em `api/gallery.js` e de um Vercel Blob store — por isso o deploy recomendado é a **[Vercel](https://vercel.com)**, que suporta as duas coisas nativamente sem configuração extra (basta rodar `npm run build:css` antes, se for subir os arquivos manualmente).
 
 Publicar em um host puramente estático (Netlify sem functions, GitHub Pages) ainda funciona para o site em si, mas o painel de upload não vai conseguir publicar fotos na galeria (a chamada a `/api/gallery` falha e o site cai no fallback estático).
+
+O deploy é automático: a cada push na **Production Branch** configurada na Vercel (*Settings → Git*), um novo deploy de produção é gerado.
