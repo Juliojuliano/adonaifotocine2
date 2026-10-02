@@ -35,7 +35,8 @@ body {
 
 /* ===================== Header ===================== */
 #header {
-  background: transparent;
+  /* degradê suave para o logo dourado ter contraste sobre a foto do hero */
+  background: linear-gradient(to bottom, rgba(20, 20, 20, 0.75), rgba(20, 20, 20, 0));
 }
 #header.scrolled {
   background: rgba(20, 20, 20, 0.96);
