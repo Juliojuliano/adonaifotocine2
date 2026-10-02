@@ -35,12 +35,22 @@ body {
 
 /* ===================== Header ===================== */
 #header {
-  background: transparent;
+  /* degradê suave para o logo dourado ter contraste sobre a foto do hero */
+  background: linear-gradient(to bottom, rgba(20, 20, 20, 0.75), rgba(20, 20, 20, 0));
 }
 #header.scrolled {
   background: rgba(20, 20, 20, 0.96);
   backdrop-filter: blur(6px);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+}
+
+.brand-name {
+  /* dourado metálico, igual ao logo */
+  background: linear-gradient(180deg, #E9CF8F 0%, #C6A15B 55%, #A9823D 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
 }
 
 .nav-link {
