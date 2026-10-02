@@ -19,6 +19,10 @@ Landing page para estúdio de fotografia e filmagem de casamentos e eventos soci
 │   ├── js/
 │   │   ├── site-config.js  # Configuração compartilhada (site + painel)
 │   │   └── main.js         # Toda a interatividade (menu, filtros, galeria, etc.)
+│   ├── img/
+│   │   ├── logo.png         # Logo completo, fundo transparente (rodapé)
+│   │   ├── logo-simbolo.png # Só o símbolo (header)
+│   │   └── mascote.gif      # Mascote animado
 │   └── favicon.svg
 ├── src/
 │   └── input.css           # Fonte do Tailwind (@tailwind base/components/utilities)
