@@ -9,6 +9,15 @@ window.SITE_CONFIG = {
   // WhatsApp (DDI + DDD + número, só dígitos)
   WHATSAPP_NUMBER: "5511965754892",
 
+  // Vídeo de destaque (seção "Assista a um dos nossos filmes").
+  // Cole aqui só o ID do vídeo no YouTube — o trecho depois de "v=" no
+  // link (ex.: https://www.youtube.com/watch?v=AbCdEfGhIjK → "AbCdEfGhIjK").
+  // Deixe vazio para a seção não aparecer no site.
+  SHOWREEL_YOUTUBE_ID: "",
+
+  // Quantas fotos o portfólio mostra por vez (botão "Ver mais fotos").
+  GALLERY_PAGE_SIZE: 12,
+
   // Cloudinary — https://cloudinary.com (conta gratuita)
   // Cloud name: aparece no topo do Dashboard do Cloudinary.
   CLOUDINARY_CLOUD_NAME: "f5ztoifv",
