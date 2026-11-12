@@ -1,3 +1,50 @@
+/* ===================== Fontes (hospedadas localmente) =====================
+   Sem requisição ao Google Fonts: menos bloqueio de renderização e nenhuma
+   dependência externa. `font-display: swap` mostra o texto imediatamente
+   com a fonte do sistema enquanto o arquivo carrega. */
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 400 900; /* fonte variável: um arquivo cobre todos os pesos */
+  font-display: swap;
+  src: url("../fonts/playfair-display-latin-wght-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Playfair Display";
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("../fonts/playfair-display-latin-wght-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("../fonts/poppins-latin-300-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/poppins-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/poppins-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/poppins-latin-600-normal.woff2") format("woff2");
+}
+
 /* ===================== Base ===================== */
 html {
   scroll-behavior: smooth;
@@ -5,6 +52,12 @@ html {
 
 body {
   overflow-x: hidden;
+}
+
+/* O atributo `hidden` precisa vencer classes utilitárias de display
+   (ex.: `inline-flex`), senão o elemento "oculto" continua aparecendo. */
+[hidden] {
+  display: none !important;
 }
 
 ::selection {
@@ -85,9 +138,11 @@ body {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #141414; /* enquanto a foto carrega (ou se falhar) */
 }
 
 .scroll-cue {
@@ -210,8 +265,58 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.gallery-item.is-hidden {
-  display: none;
+/* Placeholder exibido enquanto a lista de fotos é buscada */
+.gallery-skeleton {
+  border-radius: 0.75rem;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(100deg, #eee 30%, #f6f6f6 50%, #eee 70%);
+  background-size: 200% 100%;
+  animation: skeleton-shine 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shine {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* ===================== Filme (showreel) ===================== */
+.video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+}
+.video-frame iframe,
+.video-frame img,
+.video-play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.video-frame img {
+  object-fit: cover;
+}
+.video-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 20, 20, 0.35);
+  transition: background 0.2s ease;
+}
+.video-play:hover {
+  background: rgba(20, 20, 20, 0.15);
+}
+.video-play span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 9999px;
+  background: #C6A15B;
+  color: #141414;
 }
 
 /* ===================== Lightbox ===================== */
@@ -229,11 +334,45 @@ body {
 .lightbox[hidden] {
   display: none;
 }
+.lightbox-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4rem;
+  min-height: 4rem;
+}
 .lightbox-img {
   max-width: min(90vw, 1000px);
   max-height: 78vh;
+  width: auto;
+  height: auto;
   border-radius: 0.5rem;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transition: opacity 0.25s ease;
+}
+/* Enquanto a foto grande carrega: esconde a imagem e mostra o spinner */
+.lightbox.is-loading .lightbox-img,
+.lightbox.has-error .lightbox-img {
+  opacity: 0;
+}
+.lightbox-spinner {
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: #C6A15B;
+  display: none;
+}
+.lightbox.is-loading .lightbox-spinner {
+  display: block;
+}
+.lightbox-error {
+  position: absolute;
+  color: rgba(255,255,255,0.8);
+  text-align: center;
+  width: 16rem;
 }
 .lightbox-caption {
   color: rgba(255,255,255,0.75);
@@ -319,6 +458,92 @@ body {
   width: 1.5rem;
 }
 
+/* Área de toque maior nos indicadores (o ponto visível continua pequeno) */
+.dot {
+  position: relative;
+}
+.dot::before {
+  content: "";
+  position: absolute;
+  inset: -0.6rem -0.25rem;
+}
+
+/* ===================== FAQ ===================== */
+.faq-item {
+  border-bottom: 1px solid rgba(20, 20, 20, 0.1);
+}
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 0.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.2s ease;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary:hover {
+  color: #8A6A2E;
+}
+/* Ícone "+" que vira "×" quando a resposta está aberta */
+.faq-item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #A9823D;
+  transition: transform 0.2s ease;
+}
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+.faq-item p {
+  padding: 0 0.25rem 1.25rem;
+  color: rgba(43, 43, 43, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ===================== Formulário de orçamento ===================== */
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+.form-field {
+  display: block;
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(20, 20, 20, 0.2);
+  border-radius: 0.6rem;
+  background: #fff;
+  font-size: 1rem; /* 16px: evita o zoom automático do iOS ao focar */
+  color: #2B2B2B;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  /* ao receber foco (ex.: campo com erro), não fica atrás do header fixo */
+  scroll-margin-top: 7rem;
+}
+.form-field:focus {
+  outline: none;
+  border-color: #C6A15B;
+  box-shadow: 0 0 0 3px rgba(198, 161, 91, 0.3);
+}
+.form-field[aria-invalid="true"] {
+  border-color: #B42318;
+}
+.form-error {
+  color: #B42318;
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+}
+
 /* ===================== Contact ===================== */
 .contact-icon {
   display: inline-flex;
@@ -386,4 +611,25 @@ body {
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ===================== Movimento reduzido =====================
+   Quem pede menos animação no sistema não vê autoplay, zoom ou bounce. */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue,
+  .gallery-skeleton {
+    animation: none;
+  }
+  #testimonial-track,
+  .gallery-item img,
+  .service-card,
+  .float-btn,
+  .lightbox-img {
+    transition: none;
+  }
+  .service-card:hover,
+  .float-btn:hover,
+  .gallery-item:hover img {
+    transform: none;
+  }
 }

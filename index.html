@@ -13,19 +13,63 @@
 <meta property="og:site_name" content="Adonai Fotocine">
 <meta property="og:title" content="Adonai Fotocine | Fotografia e Filmagem de Casamentos">
 <meta property="og:description" content="Fotografia e filmagem cinematográfica de casamentos, pré-wedding, aniversários e formaturas.">
+<meta property="og:url" content="https://adonaifotocine2.vercel.app/">
+<!-- TODO(conteúdo): trocar por uma foto real da Adonai (1200x630) -->
 <meta property="og:image" content="https://picsum.photos/seed/adonai-og/1200/630">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Adonai Fotocine — fotografia e filmagem de casamentos">
 <meta property="og:locale" content="pt_BR">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Adonai Fotocine | Fotografia e Filmagem de Casamentos">
+<meta name="twitter:description" content="Fotografia e filmagem cinematográfica de casamentos, pré-wedding, aniversários e formaturas.">
+<meta name="twitter:image" content="https://picsum.photos/seed/adonai-og/1200/630">
 
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Fontes hospedadas localmente (assets/fonts, declaradas em styles.css).
+     Pré-carregamos só as duas usadas acima da dobra. -->
+<link rel="preload" href="assets/fonts/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/playfair-display-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Tailwind CSS compilado (sem dependência de CDN em runtime) -->
 <link rel="stylesheet" href="assets/css/tailwind.css">
 <link rel="stylesheet" href="assets/css/styles.css">
+
+<!-- Dados estruturados (SEO local): ajudam o Google a exibir telefone,
+     região e horário nos resultados de busca. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Adonai Fotocine",
+  "description": "Fotografia e filmagem cinematográfica de casamentos, pré-wedding, aniversários e formaturas.",
+  "url": "https://adonaifotocine2.vercel.app/",
+  "logo": "https://adonaifotocine2.vercel.app/assets/img/logo.png",
+  "image": "https://adonaifotocine2.vercel.app/assets/img/logo.png",
+  "telephone": "+55-11-96575-4892",
+  "email": "adonaifotocine@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "São Bernardo do Campo",
+    "addressRegion": "SP",
+    "addressCountry": "BR"
+  },
+  "areaServed": { "@type": "Country", "name": "Brasil" },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "opens": "09:00",
+    "closes": "19:00"
+  },
+  "sameAs": [
+    "https://www.instagram.com/adonaifotocine",
+    "https://facebook.com/adonaifotocine"
+  ]
+}
+</script>
 </head>
 <body class="bg-brand-cream text-brand-ink font-sans antialiased">
 
@@ -35,7 +79,7 @@
 <header id="header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
   <nav class="max-w-7xl mx-auto px-5 md:px-8 flex items-center justify-between h-20" aria-label="Navegação principal">
     <a href="#topo" class="flex items-center gap-3 header-logo" aria-label="Adonai Fotocine — página inicial">
-      <img src="assets/img/logo-simbolo.png" alt="" class="h-14 md:h-16 w-auto" width="483" height="466">
+      <img src="assets/img/logo-simbolo.webp" alt="" class="h-14 md:h-16 w-auto" width="192" height="185">
       <span class="flex flex-col leading-none">
         <span class="brand-name font-serif font-semibold text-2xl md:text-3xl tracking-[0.18em]">ADONAI</span>
         <span class="font-sans font-light text-[0.65rem] md:text-xs tracking-[0.5em] text-white/90 mt-1.5 pl-0.5">FOTOCINE</span>
@@ -75,6 +119,7 @@
       <li><a href="#servicos" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Serviços</a></li>
       <li><a href="#portfolio" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Portfólio</a></li>
       <li><a href="#depoimentos" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Depoimentos</a></li>
+      <li><a href="#duvidas" class="block py-3 border-b border-white/10 mobile-nav-link" data-nav>Dúvidas</a></li>
       <li><a href="#contato" class="block py-3 mobile-nav-link" data-nav>Contato</a></li>
       <li class="pt-2">
         <a href="https://wa.me/5511965754892" target="_blank" rel="noopener noreferrer" class="flex justify-center items-center gap-2 bg-brand-gold text-brand-dark font-semibold px-5 py-3 rounded-full">
@@ -89,7 +134,13 @@
 
   <!-- ===================== HERO ===================== -->
   <section id="topo" class="hero relative min-h-screen flex items-center justify-center text-center px-5">
-    <div class="hero-bg" style="background-image:url('https://picsum.photos/seed/adonai-hero/1920/1280')" role="img" aria-label="Casal em cerimônia de casamento ao entardecer"></div>
+    <!-- TODO(conteúdo): trocar por uma foto real da Adonai -->
+    <img class="hero-bg"
+         src="https://picsum.photos/seed/adonai-hero/1920/1280"
+         srcset="https://picsum.photos/seed/adonai-hero/960/640 960w, https://picsum.photos/seed/adonai-hero/1920/1280 1920w"
+         sizes="100vw" width="1920" height="1280"
+         alt="Casal em cerimônia de casamento ao entardecer"
+         fetchpriority="high" decoding="async">
     <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-brand-dark"></div>
 
     <div class="relative z-10 max-w-3xl mx-auto text-white reveal">
@@ -220,17 +271,42 @@
       </div>
 
       <div class="flex flex-wrap justify-center gap-3 mb-10 reveal" id="portfolio-filters" role="group" aria-label="Filtrar portfólio por categoria">
-        <button type="button" class="filter-btn is-active" data-filter="todos">Todos</button>
-        <button type="button" class="filter-btn" data-filter="casamento">Casamentos</button>
-        <button type="button" class="filter-btn" data-filter="pre-wedding">Pré-Wedding</button>
-        <button type="button" class="filter-btn" data-filter="making-of">Making Of</button>
+        <button type="button" class="filter-btn is-active" data-filter="todos" aria-pressed="true">Todos</button>
+        <button type="button" class="filter-btn" data-filter="casamento" aria-pressed="false">Casamentos</button>
+        <button type="button" class="filter-btn" data-filter="pre-wedding" aria-pressed="false">Pré-Wedding</button>
+        <button type="button" class="filter-btn" data-filter="making-of" aria-pressed="false">Making Of</button>
       </div>
 
-      <p id="gallery-status" class="text-center text-sm text-brand-ink/50 mb-6" role="status" aria-live="polite"></p>
+      <!-- Anúncio só para leitores de tela (ex.: "Mostrando 12 de 30 fotos") -->
+      <p id="gallery-status" class="sr-only" role="status" aria-live="polite"></p>
 
-      <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-        <!-- Gallery items injected via data below; static for no-JS fallback -->
+      <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4" aria-busy="true">
+        <!-- Itens injetados por assets/js/main.js -->
       </div>
+
+      <p id="gallery-empty" class="text-center text-brand-ink/60 py-10" hidden>Ainda não há fotos nesta categoria.</p>
+
+      <div class="text-center mt-10">
+        <button type="button" id="gallery-more" class="inline-flex items-center justify-center border border-brand-dark/20 hover:border-brand-gold hover:text-brand-goldtext font-semibold px-8 py-3 rounded-full transition-colors" hidden>
+          Ver mais fotos
+        </button>
+      </div>
+
+      <noscript>
+        <p class="text-center text-brand-ink/70">Ative o JavaScript para ver a galeria ou acompanhe nosso trabalho no <a class="underline" href="https://www.instagram.com/adonaifotocine">Instagram</a>.</p>
+      </noscript>
+    </div>
+  </section>
+
+  <!-- ===================== FILME (showreel) =====================
+       Fica oculta até SHOWREEL_YOUTUBE_ID ser preenchido em
+       assets/js/site-config.js. O player do YouTube só é carregado
+       quando o visitante clica — antes disso é apenas uma imagem. -->
+  <section id="filme" class="py-20 md:py-28 px-5 bg-brand-dark text-white scroll-mt-20" hidden>
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="uppercase tracking-[0.25em] text-brand-gold text-xs md:text-sm font-semibold mb-4 reveal">Filmagem cinematográfica</p>
+      <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-10 reveal">Assista a um dos nossos filmes</h2>
+      <div id="showreel" class="video-frame reveal"></div>
     </div>
   </section>
 
@@ -242,11 +318,15 @@
     <button type="button" id="lightbox-prev" class="lightbox-btn lightbox-prev" aria-label="Imagem anterior">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
-    <img id="lightbox-img" src="" alt="" class="lightbox-img">
+    <div class="lightbox-stage">
+      <span id="lightbox-spinner" class="lightbox-spinner animate-spin" aria-hidden="true"></span>
+      <img id="lightbox-img" alt="" class="lightbox-img">
+      <p id="lightbox-error" class="lightbox-error" hidden>Não foi possível carregar esta foto.</p>
+    </div>
     <button type="button" id="lightbox-next" class="lightbox-btn lightbox-next" aria-label="Próxima imagem">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
-    <p id="lightbox-caption" class="lightbox-caption"></p>
+    <p id="lightbox-caption" class="lightbox-caption" aria-live="polite"></p>
   </div>
 
   <!-- ===================== DEPOIMENTOS ===================== -->
@@ -255,13 +335,13 @@
       <p class="uppercase tracking-[0.25em] text-brand-gold text-xs md:text-sm font-semibold mb-4 reveal">Quem já viveu essa experiência</p>
       <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-14 reveal">Depoimentos</h2>
 
-      <div class="relative reveal">
+      <div class="relative reveal" role="group" aria-roledescription="carrossel" aria-label="Depoimentos de clientes">
         <div class="overflow-hidden" id="testimonial-viewport">
           <div class="flex transition-transform duration-500 ease-out" id="testimonial-track">
 
             <div class="w-full shrink-0 px-4">
               <div class="testimonial-card">
-                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
+                <p class="text-brand-gold mb-5 tracking-[0.25em]"><span aria-hidden="true">★★★★★</span><span class="sr-only">Avaliação: 5 de 5 estrelas</span></p>
                 <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"A equipe da Adonai capturou cada detalhe do nosso casamento com uma sensibilidade incrível. Choramos de emoção assistindo ao filme!"</p>
                 <p class="font-semibold">Juscilene &amp; Miro</p>
                 <p class="text-white/60 text-sm">Casamento — Dezembro 2025</p>
@@ -270,7 +350,7 @@
 
             <div class="w-full shrink-0 px-4">
               <div class="testimonial-card">
-                <div class="flex justify-center gap-1 text-brand-gold mb-5" aria-hidden="true">★★★★★</div>
+                <p class="text-brand-gold mb-5 tracking-[0.25em]"><span aria-hidden="true">★★★★★</span><span class="sr-only">Avaliação: 5 de 5 estrelas</span></p>
                 <p class="font-serif text-lg md:text-xl italic leading-relaxed mb-6">"Profissionalismo do início ao fim. As fotos do nosso pré-wedding ficaram maravilhosas e a entrega foi super rápida."</p>
                 <p class="font-semibold">Rafaela &amp; Matheus</p>
                 <p class="text-white/60 text-sm">Pré-Wedding — Outubro 2025</p>
@@ -287,7 +367,46 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
 
-        <div class="flex justify-center gap-2 mt-8" id="testimonial-dots" role="tablist" aria-label="Selecionar depoimento"></div>
+        <div class="flex justify-center items-center gap-4 mt-8">
+          <div class="flex items-center gap-2" id="testimonial-dots"></div>
+          <button type="button" id="testimonial-pause" class="text-xs text-white/60 hover:text-brand-gold underline underline-offset-4" aria-pressed="false">Pausar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DÚVIDAS (FAQ) =====================
+       <details>/<summary> nativo: funciona sem JavaScript e já é
+       acessível por teclado e leitor de tela. -->
+  <section id="duvidas" class="py-20 md:py-28 px-5 bg-white scroll-mt-20">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12 reveal">
+        <p class="uppercase tracking-[0.25em] text-brand-goldtext text-xs md:text-sm font-semibold mb-4">Antes de fechar</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-4">Dúvidas Frequentes</h2>
+        <p class="text-brand-ink/70">Não achou o que procurava? É só chamar a gente no WhatsApp.</p>
+      </div>
+
+      <div class="faq-list reveal">
+        <details class="faq-item">
+          <summary>Com quanta antecedência devo reservar a data?</summary>
+          <p>Quanto antes, melhor: atendemos um número limitado de eventos por data. Fale com a gente para consultar a disponibilidade do seu dia.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Vocês atendem fora de São Bernardo do Campo?</summary>
+          <p>Sim. Estamos em São Bernardo do Campo — SP e atendemos em todo o Brasil mediante agenda.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Posso contratar só a fotografia ou só a filmagem?</summary>
+          <p>Pode. Montamos a proposta de acordo com o que faz sentido para o seu evento — fotografia, filmagem ou a cobertura completa.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Em quanto tempo recebo as fotos e o filme?</summary>
+          <p>O prazo de entrega varia conforme o tipo de evento e o pacote escolhido, e fica registrado em contrato para você ter total tranquilidade.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Como funciona o orçamento?</summary>
+          <p>Você conta um pouco sobre o evento (tipo, data e cidade) e retornamos com uma proposta personalizada, com valores e condições de pagamento.</p>
+        </details>
       </div>
     </div>
   </section>
@@ -301,10 +420,67 @@
         <p class="text-brand-ink/70">Conte um pouco sobre o seu evento e retornaremos com uma proposta personalizada.</p>
       </div>
 
-      <div class="grid lg:grid-cols-5 gap-10 items-center">
-        <!-- Info -->
+      <div class="grid lg:grid-cols-5 gap-10 items-start">
+
+        <!-- Pedido de orçamento: não envia nada a servidor — só monta a
+             mensagem e abre o WhatsApp já preenchido (ver main.js). -->
         <div class="lg:col-span-3 reveal">
-          <div class="bg-white rounded-2xl shadow-sm p-8 flex flex-col gap-6">
+          <form id="quote-form" class="bg-white rounded-2xl shadow-sm p-6 sm:p-8" novalidate>
+            <div class="flex items-center justify-between gap-4 mb-6">
+              <div>
+                <h3 class="font-serif text-2xl font-semibold mb-1">Peça seu orçamento</h3>
+                <p class="text-brand-ink/70 text-sm">Preencha e continue a conversa no WhatsApp — leva menos de um minuto.</p>
+              </div>
+              <img src="assets/img/mascote.webp" alt="Mascote animado da Adonai Fotocine: personagem com boné preto e dourado e câmera fotográfica no peito" class="mascote w-16 sm:w-20 h-auto shrink-0 rounded-xl" loading="lazy" width="260" height="462">
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="quote-name" class="form-label">Seu nome <span aria-hidden="true">*</span></label>
+                <input type="text" id="quote-name" name="name" class="form-field" autocomplete="name" maxlength="80" required aria-describedby="quote-name-error">
+                <p id="quote-name-error" class="form-error" hidden></p>
+              </div>
+              <div>
+                <label for="quote-type" class="form-label">Tipo de evento <span aria-hidden="true">*</span></label>
+                <select id="quote-type" name="type" class="form-field" required aria-describedby="quote-type-error">
+                  <option value="">Selecione…</option>
+                  <option>Casamento</option>
+                  <option>Pré-Wedding / Noivado</option>
+                  <option>Filmagem Cinematográfica</option>
+                  <option>Aniversário / Debutante</option>
+                  <option>Formatura</option>
+                  <option>Álbuns e Produtos</option>
+                  <option>Outro</option>
+                </select>
+                <p id="quote-type-error" class="form-error" hidden></p>
+              </div>
+              <div>
+                <label for="quote-date" class="form-label">Data do evento <span class="font-normal text-brand-ink/50">(se já tiver)</span></label>
+                <input type="date" id="quote-date" name="date" class="form-field" aria-describedby="quote-date-error">
+                <p id="quote-date-error" class="form-error" hidden></p>
+              </div>
+              <div>
+                <label for="quote-city" class="form-label">Cidade</label>
+                <input type="text" id="quote-city" name="city" class="form-field" autocomplete="address-level2" maxlength="80">
+              </div>
+              <div class="sm:col-span-2">
+                <label for="quote-message" class="form-label">Quer contar mais alguma coisa?</label>
+                <textarea id="quote-message" name="message" class="form-field" rows="3" maxlength="500"></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="mt-6 w-full flex items-center justify-center gap-2 bg-brand-gold hover:bg-brand-golddark text-brand-dark font-semibold px-5 py-3.5 rounded-full transition-colors">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20l1.1-5.4A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5"/></svg>
+              Continuar no WhatsApp
+            </button>
+            <p id="quote-status" class="text-sm text-brand-ink/70 mt-3 text-center" role="status" aria-live="polite"></p>
+            <noscript><p class="text-sm text-center mt-3">Sem JavaScript? Fale direto pelo <a class="underline" href="https://wa.me/5511965754892">WhatsApp</a>.</p></noscript>
+          </form>
+        </div>
+
+        <!-- Info -->
+        <div class="lg:col-span-2 reveal">
+          <div class="bg-white rounded-2xl shadow-sm p-6 sm:p-8 flex flex-col gap-6">
             <div class="flex items-start gap-4">
               <span class="contact-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10.5c0 6.5-9 12-9 12s-9-5.5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10.5" r="3"/></svg>
@@ -345,11 +521,6 @@
               </div>
             </div>
 
-            <a href="https://wa.me/5511965754892?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-brand-gold text-brand-dark font-semibold px-5 py-3 rounded-full hover:brightness-95 transition">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20l1.1-5.4A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5"/></svg>
-              Falar no WhatsApp
-            </a>
-
             <div class="flex items-center gap-3 pt-2">
               <a href="https://www.instagram.com/adonaifotocine" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Adonai Fotocine" class="social-icon">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
@@ -363,11 +534,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Mascote -->
-        <div class="lg:col-span-2 reveal flex justify-center">
-          <img src="assets/img/mascote.gif" alt="Mascote animado da Adonai Fotocine: personagem com boné preto e dourado e câmera fotográfica no peito" class="w-full max-w-[220px] lg:max-w-[260px]" loading="lazy" width="260" height="462">
-        </div>
       </div>
     </div>
   </section>
@@ -379,7 +545,7 @@
   <div class="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
     <div>
       <a href="#topo" class="inline-block mb-4" aria-label="Adonai Fotocine — início" data-nav>
-        <img src="assets/img/logo.png" alt="Adonai Fotocine" class="h-32 w-auto" width="700" height="680" loading="lazy">
+        <img src="assets/img/logo.webp" alt="Adonai Fotocine" class="h-32 w-auto" width="384" height="373" loading="lazy">
       </a>
       <p class="text-sm leading-relaxed">Fotografia e filmagem cinematográfica para eternizar os momentos mais importantes da sua vida.</p>
     </div>
@@ -391,6 +557,7 @@
         <li><a href="#servicos" class="hover:text-brand-gold" data-nav>Serviços</a></li>
         <li><a href="#portfolio" class="hover:text-brand-gold" data-nav>Portfólio</a></li>
         <li><a href="#depoimentos" class="hover:text-brand-gold" data-nav>Depoimentos</a></li>
+        <li><a href="#duvidas" class="hover:text-brand-gold" data-nav>Dúvidas</a></li>
         <li><a href="#contato" class="hover:text-brand-gold" data-nav>Contato</a></li>
       </ul>
     </div>
